@@ -21,6 +21,7 @@ func initTemplate() {
 
 func templateDialogueStart() {
 	template.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
 	for i := 0; i < len(warriorClass); i++ {
 		if ns.GetCaller() == warriorClass[i] {
@@ -38,6 +39,17 @@ func templateDialogueStart() {
 		if ns.GetCaller() == wizardClass[i] {
 			return
 		}
+	}
+}
+
+func templateDialogueManaMinesQuest() {
+	template.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
+	if !data.FollowUpQuestDialogue && !data.FollowUpQuestDialogueCompleted {
+		resetMillardDialogue()
+	} else {
+		//ns.SetDialog(template, ns.DialogNormal, templateDialogueManaMinesQuest, templatedDialogueEnd)
+		//ns.TellStory(audio.HumanMaleEatFood, "DIALOG ADD HERE")
 	}
 }
 

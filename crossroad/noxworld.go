@@ -34,9 +34,25 @@ func init() {
 		initRastur()
 		initMillard()
 		initOsborn()
+		initTest()
 	})
 	checkClass()
 	ns.PrintStrToAll("Welcome to the NoxWorld server.")
+	//ns.OnPlayerJoin(playerJoin)
+	//ns.OnPlayerLeave(playerLeave)
+	//ns.OnPlayerDeath(playerDeath)
+}
+
+func playerJoin() {
+
+}
+
+func playerLeave() {
+
+}
+
+func playerDeath() {
+
 }
 
 func checkClass() {

@@ -22,10 +22,6 @@ func initKirik() {
 	kirikManageDoorLock()
 }
 
-func kirikCallBackup() {
-
-}
-
 func kirikManageDoorLock() {
 	search := ns.FindClosestObject(kenneth, ns.HasTypeName{"NewPlayer"}, ns.InCirclef{Center: kirik, R: 300})
 	if search != nil {
@@ -52,6 +48,7 @@ func kirikManageDoorLock() {
 
 func kirikDialogueStart() {
 	kirik.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
 	for i := 0; i < len(warriorClass); i++ {
 		if ns.GetCaller() == warriorClass[i] {
@@ -62,9 +59,10 @@ func kirikDialogueStart() {
 	// Conjurer dialogue.
 	for i := 0; i < len(ConjurerClass); i++ {
 		if ns.GetCaller() == ConjurerClass[i] {
-			// If Mana Mines Quest is active {
-			// Con03A.scr:GalavaGuard2 // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
-			// }
+			if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+				ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
+				return
+			}
 			return
 		}
 	}
@@ -86,5 +84,6 @@ func kirikDialogueEnd() {
 }
 
 func resetKirikDialogue() {
+	ns.SetDialog(kirik, ns.DialogNormal, kirikDialogueStart, kirikDialogueEnd)
 	return
 }

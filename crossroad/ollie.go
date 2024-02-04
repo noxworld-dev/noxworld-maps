@@ -1,6 +1,8 @@
 package noxworld
 
-import "github.com/noxworld-dev/noxscript/ns/v4"
+import (
+	"github.com/noxworld-dev/noxscript/ns/v4"
+)
 
 var ollie ns.Obj
 var ollieSpawn ns.Pointf
@@ -17,9 +19,17 @@ func initOllie() {
 	}
 	ollieSpawn = ollie.Pos()
 	place()
+	ns.OnChat(commandOllie)
 }
 
-func heel() {
+func commandOllie(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
+	if p != nil {
+		switch msg {
+		case "come":
+
+		}
+	}
+	return msg
 }
 
 func place() {

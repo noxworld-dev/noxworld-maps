@@ -21,21 +21,19 @@ func initHorst() {
 	horstSpawn = horst.Pos()
 	ns.StoryPic(horst, "IxGuard2Pic")
 	ns.SetDialog(horst, ns.DialogNormal, horstDialogueStart, horstDialogueEnd)
-	horst.OnEvent(ns.EventEnemyHeard, func() { horstCallBackup() })
-	horst.OnEvent(ns.EventEnemySighted, func() { horstCallBackup() })
-}
-
-func horstCallBackup() {
-
 }
 
 func horstDialogueStart() {
 	horst.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
 	for i := 0; i < len(warriorClass); i++ {
 		if ns.GetCaller() == warriorClass[i] {
 			// if mayor needs help
-			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
+			if !data.MayorTheogrinNeedsHelp && !data.MayorTheogrinNeedsHelpCompleted {
+				ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
+				return
+			}
 			return
 		}
 	}
@@ -43,7 +41,10 @@ func horstDialogueStart() {
 	for i := 0; i < len(ConjurerClass); i++ {
 		if ns.GetCaller() == ConjurerClass[i] {
 			// if mayor needs help
-			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
+			if !data.MayorTheogrinNeedsHelp && !data.MayorTheogrinNeedsHelpCompleted {
+				ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
+				return
+			}
 			return
 		}
 	}
@@ -51,7 +52,10 @@ func horstDialogueStart() {
 	for i := 0; i < len(wizardClass); i++ {
 		if ns.GetCaller() == wizardClass[i] {
 			// if mayor needs help
-			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
+			if !data.MayorTheogrinNeedsHelp && !data.MayorTheogrinNeedsHelpCompleted {
+				ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
+				return
+			}
 			return
 		}
 	}
@@ -71,5 +75,6 @@ func horstDialogueEnd() {
 }
 
 func resetHorstDialogue() {
+	ns.SetDialog(horst, ns.DialogNormal, horstDialogueStart, horstDialogueEnd)
 	return
 }

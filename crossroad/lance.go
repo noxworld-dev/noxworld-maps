@@ -8,12 +8,6 @@ import (
 var lance ns.Obj
 var lanceSpawn ns.Pointf
 
-func dialogExampleLance() {
-	// War03a:DunMirGuard2 : You should be proud to serve Horrendous and the Fire Knights of Dün Mir.
-	// Mana mines quest.
-	// Con03A.scr:DunMirGuard2: The Mana Mines are to the west of the Crossroads. You should return there.
-}
-
 func initLance() {
 	if ns.Object("Lance") != nil {
 		lance = ns.Object("Lance")
@@ -28,18 +22,26 @@ func initLance() {
 
 func lanceDialogueStart() {
 	lance.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
 	for i := 0; i < len(warriorClass); i++ {
 		if ns.GetCaller() == warriorClass[i] {
-			// if ns.GetCaller() == fireKnight {
-			//		War03a:DunMirGuard2
-			//}
+			if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+				ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
+				return
+			} else if data.fireKnight {
+				ns.TellStory(audio.FireKnight1Hurt, "War03a:DunMirGuard2") // You should be proud to serve Horrendous and the Fire Knights of Dün Mir.
+				return
+			}
 			return
 		}
 	}
 	// Conjurer dialogue.
 	for i := 0; i < len(ConjurerClass); i++ {
 		if ns.GetCaller() == ConjurerClass[i] {
+			if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+				ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
+			}
 			return
 		}
 	}
@@ -81,5 +83,6 @@ func lanceDialogueEnd() {
 }
 
 func resetLanceDialogue() {
+	ns.SetDialog(lance, ns.DialogNormal, lanceDialogueStart, lanceDialogueEnd)
 	return
 }

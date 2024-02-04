@@ -9,11 +9,6 @@ var kenneth ns.Obj
 var kennethSpawn ns.Pointf
 var lockDoorDunMir bool
 
-func dialogExampleKenneth() {
-	// War03a:DunMirGuard1 -- > The Fortress of Dün Mir is home of the legendary Fire Knights.
-	// We hear reports that creatures are attacking people near the Village of Ix.
-}
-
 func initKenneth() {
 	if ns.Object("Kenneth") != nil {
 		kenneth = ns.Object("Kenneth")
@@ -53,18 +48,18 @@ func kennethManageDoorLock() {
 
 func kennethDialogueStart() {
 	kenneth.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
 	for i := 0; i < len(warriorClass); i++ {
 		if ns.GetCaller() == warriorClass[i] {
-			// if ns.GetCaller() == fireKnight {
-			//		War03a:DunMirGuard2
-			//}
+			ns.TellStory(audio.ArcherHurt, "War03a:DunMirGuard1") //  The Fortress of Dün Mir is home of the legendary Fire Knights.
 			return
 		}
 	}
 	// Conjurer dialogue.
 	for i := 0; i < len(ConjurerClass); i++ {
 		if ns.GetCaller() == ConjurerClass[i] {
+			ns.TellStory(audio.ArcherHurt, "War03a:DunMirGuard1") //  The Fortress of Dün Mir is home of the legendary Fire Knights.
 			return
 		}
 	}
@@ -106,5 +101,6 @@ func kennethDialogueEnd() {
 }
 
 func resetKennethDialogue() {
+	ns.SetDialog(kenneth, ns.DialogNormal, kennethDialogueStart, kennethDialogueEnd)
 	return
 }

@@ -2,13 +2,11 @@ package noxworld
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/noxscript/ns/v4/audio"
 )
 
 var osborn ns.Obj
 var osbornSpawn ns.Pointf
-
-func dialogExampleOsborn() {
-}
 
 func initOsborn() {
 	if ns.Object("Osborn") != nil {
@@ -24,30 +22,20 @@ func initOsborn() {
 
 func osbornDialogueStart() {
 	osborn.LookAtObject(ns.GetCaller())
-	// Warrior dialogue.
-	for i := 0; i < len(warriorClass); i++ {
-		if ns.GetCaller() == warriorClass[i] {
-			return
-		}
+	data := loadMyQuestData(ns.GetCaller().Player())
+	// Start LostSpectales quest.
+	if !data.LostSpectacles && !data.LostSpectaclesCompleted {
+		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:HermitMeet01") // Gahhhhhh! No! Don't kill me! Oh. A young man?! I can't see well at all. But I know you're not one of those infernal bandits who stole my spectacles! I'm almost blind without them. If you could get them back, you'd save my life and I'd be eternally grateful.
+		updateMyQuestData(ns.GetCaller().Player(), func(data *MyQuestData) {
+			data.LostSpectacles = true
+		})
+		return
 	}
-	// Conjurer dialogue.
-	for i := 0; i < len(ConjurerClass); i++ {
-		if ns.GetCaller() == ConjurerClass[i] {
-			return
-		}
+	if data.LostSpectacles && !data.LostSpectaclesCompleted {
+		ns.TellStory(audio.ArcherHurt, "Con03A.scr:HermitMeet02")
+		return
 	}
-	// Wizard dialogue.
-	for i := 0; i < len(wizardClass); i++ {
-		if ns.GetCaller() == wizardClass[i] {
-			return
-		}
-	}
-}
-
-func osbornDialogueSpectaclesQuest() {
-	// Con03A.scr:HermitHappy	My spectacles! You brought them back! May all that is great bless you! And please, take this scroll. It contains all I have learned about bats. It would be invaluable to any conjurer.
-	// Con03A.scr:HermitMeet01	Gahhhhhh! No! Don't kill me! Oh. A young man?! I can't see well at all. But I know you're not one of those infernal bandits who stole my spectacles! I'm almost blind without them. If you could get them back, you'd save my life and I'd be eternally grateful.
-	// Con03A.scr:HermitMeet02	Have you recovered my spectacles?! Oh.... Well, the rogues who took them have a hideout in the woods nearby.
+	// on complete with spectacles // Con03A.scr:HermitHappy	My spectacles! You brought them back! May all that is great bless you! And please, take this scroll. It contains all I have learned about bats. It would be invaluable to any conjurer.
 }
 
 func osbornDialogueEnd() {
@@ -60,5 +48,6 @@ func osbornDialogueEnd() {
 }
 
 func resetOsbornDialogue() {
+	ns.SetDialog(osborn, ns.DialogNormal, osbornDialogueStart, osbornDialogueEnd)
 	return
 }

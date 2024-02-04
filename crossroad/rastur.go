@@ -18,16 +18,11 @@ func initRastur() {
 	rasturSpawn = rastur.Pos()
 	ns.StoryPic(rastur, "WizardGuard1Pic")
 	ns.SetDialog(rastur, ns.DialogNormal, rasturDialogueStart, rasturDialogueEnd)
-	rastur.OnEvent(ns.EventEnemyHeard, func() { rasturCallBackup() })
-	rastur.OnEvent(ns.EventEnemySighted, func() { rasturCallBackup() })
-}
-
-func rasturCallBackup() {
-
 }
 
 func rasturDialogueStart() {
 	rastur.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
 	for i := 0; i < len(warriorClass); i++ {
 		if ns.GetCaller() == warriorClass[i] {
@@ -38,18 +33,22 @@ func rasturDialogueStart() {
 	// Conjurer dialogue.
 	for i := 0; i < len(ConjurerClass); i++ {
 		if ns.GetCaller() == ConjurerClass[i] {
-			// If mana mines quest active
-			// Con03A.scr:GalavaGuard1
-			//
+			// If quest is active.
+			if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+				ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.
+				return
+			}
 			return
 		}
 	}
 	// Wizard dialogue.
 	for i := 0; i < len(wizardClass); i++ {
 		if ns.GetCaller() == wizardClass[i] {
-			// If mana mines quest active
-			// Con03A.scr:GalavaGuard1
-			//
+			// If quest is active.
+			if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+				ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.
+				return
+			}
 			return
 		}
 	}
@@ -65,5 +64,6 @@ func rasturDialogueEnd() {
 }
 
 func resetRasturDialogue() {
+	ns.SetDialog(rastur, ns.DialogNormal, rasturDialogueStart, rasturDialogueEnd)
 	return
 }

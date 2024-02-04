@@ -53,5 +53,6 @@ func brigadinDialogueEnd() {
 }
 
 func resetBrigadinDialogue() {
+	ns.SetDialog(brigadin, ns.DialogNormal, brigadinDialogueStart, brigadinDialogueEnd)
 	return
 }
