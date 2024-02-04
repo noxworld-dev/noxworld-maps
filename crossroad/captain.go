@@ -66,14 +66,17 @@ func captainDialogueStart() {
 	// Check if the player is a Wizard.
 	for i := 0; i < len(wizardClass); i++ {
 		if ns.GetCaller() == wizardClass[i] {
+			// Wizards starting quest.
 			if !data.BecomeTheWizardApprentice && !data.BecomeTheWizardApprenticeCompleted {
-				ns.PrintStrToAll("check")
 				updateMyQuestData(ns.GetCaller().Player(), func(data *MyQuestData) {
 					data.BecomeTheWizardApprentice = true
 				})
 				ns.SetDialog(captain, ns.DialogNext, captainDialogueWizardStartingQuest, captainDialogueWizardStartingQuest)
 				ns.TellStory(audio.HumanMaleEatFood, "Wiz01A.scr:JandorTalk01") // Hard, cold facts, lad. You must become a wizard's apprentice before you can gain entry to the Tower of Illusion. The one controlling that is the Arch-Wizard Horvath, an old friend of mine.I know Horvath is in need of a worthy apprentice. But are you worthy, lad? heh, heh, heh...Follow the beach road. Find the home of his new apprentice. And beware of urchins. They can be the most nettlesome of pests, at best. I guarantee, you don't want to learn their worst, lad.
 				return
+			}
+			if data.BecomeTheWizardApprentice && !data.BecomeTheWizardApprenticeCompleted {
+				captainDialogueWizardStartingQuest()
 			}
 		}
 		// ns.TellStory(audio.HumanMaleEatFood, "War01a:CaptainTalk2dStart") // But find the smuggler's tunnel in the cavern and you are in!
@@ -89,8 +92,11 @@ func captainDialogueStart() {
 				})
 				ns.SetDialog(captain, ns.DialogNext, captainDialogueWizardStartingQuest, captainDialogueWizardStartingQuest)
 				ns.TellStory(audio.HumanMaleEatFood, "War01A.scr:CaptainTalkStart") // Gain entry to Dün Mir, find the Academy and then be ready for the test of your life -- The Gauntlet. It weeds out the weak recruits.return
+				return
 			}
-			return
+			if data.JoinTheFireKnights && !data.JoinTheFireKnightsCompleted {
+				captainDialogueWarriorStartingQuest()
+			}
 		}
 		// War03b:AirshipCaptainIxSpeech : // What, ho! You've returned, lad, or should I say Warrior! Heh, heh, heh...
 	}
@@ -101,6 +107,7 @@ func captainDialogueStart() {
 		}
 	}
 	// ns.TellStory(audio.HumanMaleEatFood, "Con01a:CaptainGreet") // I'll bring you no further, lad. Too many prying eyes the closer we get by air to the Village of Ix.Follow the tunnel which leads to Ix.Find my old friend Aldwyn. He'll help you if he can.Take this staff. Forest beasts will heed its bite should they threaten. Careful as you go, lad.
+
 	// General
 	// ns.TellStory(audio.HumanMaleEatFood, "War01a:CaptainTalk2cStart") // The path leads to Dün Mir, the great subterranean citadel of Warriors!
 }
