@@ -23,29 +23,23 @@ func templateDialogueStart() {
 	template.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
-	for i := 0; i < len(warriorClass); i++ {
-		if ns.GetCaller() == warriorClass[i] {
-			return
-		}
+	if data.Character.Warrior {
+		return
 	}
 	// Conjurer dialogue.
-	for i := 0; i < len(ConjurerClass); i++ {
-		if ns.GetCaller() == ConjurerClass[i] {
-			return
-		}
+	if data.Character.Conjurer {
+		return
 	}
 	// Wizard dialogue.
-	for i := 0; i < len(wizardClass); i++ {
-		if ns.GetCaller() == wizardClass[i] {
-			return
-		}
+	if data.Character.Wizard {
+		return
 	}
 }
 
 func templateDialogueManaMinesQuest() {
 	template.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	if !data.FollowUpQuestDialogue && !data.FollowUpQuestDialogueCompleted {
+	if !data.Quest.FollowUpQuestDialogue && !data.Quest.FollowUpQuestDialogueCompleted {
 		resetMillardDialogue()
 	} else {
 		//ns.SetDialog(template, ns.DialogNormal, templateDialogueManaMinesQuest, templatedDialogueEnd)

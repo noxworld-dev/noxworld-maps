@@ -27,37 +27,31 @@ func horstDialogueStart() {
 	horst.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
-	for i := 0; i < len(warriorClass); i++ {
-		if ns.GetCaller() == warriorClass[i] {
-			// if mayor needs help
-			if !data.MayorTheogrinNeedsHelp && !data.MayorTheogrinNeedsHelpCompleted {
-				ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
-				return
-			}
+	if data.Character.Warrior {
+		// if mayor needs help
+		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
+			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
 			return
 		}
+		return
 	}
 	// Conjurer dialogue.
-	for i := 0; i < len(ConjurerClass); i++ {
-		if ns.GetCaller() == ConjurerClass[i] {
-			// if mayor needs help
-			if !data.MayorTheogrinNeedsHelp && !data.MayorTheogrinNeedsHelpCompleted {
-				ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
-				return
-			}
+	if data.Character.Conjurer {
+		// if mayor needs help
+		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
+			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
 			return
 		}
+		return
 	}
 	// Wizard dialogue.
-	for i := 0; i < len(wizardClass); i++ {
-		if ns.GetCaller() == wizardClass[i] {
-			// if mayor needs help
-			if !data.MayorTheogrinNeedsHelp && !data.MayorTheogrinNeedsHelpCompleted {
-				ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
-				return
-			}
+	if data.Character.Wizard {
+		// if mayor needs help
+		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
+			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
 			return
 		}
+		return
 	}
 }
 

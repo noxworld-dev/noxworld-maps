@@ -22,24 +22,19 @@ func initBrigadin() {
 
 func brigadinDialogueStart() {
 	brigadin.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
-	for i := 0; i < len(warriorClass); i++ {
-		if ns.GetCaller() == warriorClass[i] {
-			ns.TellStory(audio.SwordsmanHurt, "War03a:DunMirGuard3")
-			return
-		}
+	if data.Character.Warrior {
+		ns.TellStory(audio.SwordsmanHurt, "War03a:DunMirGuard3")
+		return
 	}
 	// Conjurer dialogue.
-	for i := 0; i < len(ConjurerClass); i++ {
-		if ns.GetCaller() == ConjurerClass[i] {
-			return
-		}
+	if data.Character.Conjurer {
+		return
 	}
 	// Wizard dialogue.
-	for i := 0; i < len(wizardClass); i++ {
-		if ns.GetCaller() == wizardClass[i] {
-			return
-		}
+	if data.Character.Wizard {
+		return
 	}
 }
 

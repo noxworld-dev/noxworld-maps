@@ -24,14 +24,14 @@ func osbornDialogueStart() {
 	osborn.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	// Start LostSpectales quest.
-	if !data.LostSpectacles && !data.LostSpectaclesCompleted {
+	if !data.Quest.LostSpectacles && !data.Quest.LostSpectaclesCompleted {
 		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:HermitMeet01") // Gahhhhhh! No! Don't kill me! Oh. A young man?! I can't see well at all. But I know you're not one of those infernal bandits who stole my spectacles! I'm almost blind without them. If you could get them back, you'd save my life and I'd be eternally grateful.
-		updateMyQuestData(ns.GetCaller().Player(), func(data *MyQuestData) {
-			data.LostSpectacles = true
+		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+			data.Quest.LostSpectacles = true
 		})
 		return
 	}
-	if data.LostSpectacles && !data.LostSpectaclesCompleted {
+	if data.Quest.LostSpectacles && !data.Quest.LostSpectaclesCompleted {
 		ns.TellStory(audio.ArcherHurt, "Con03A.scr:HermitMeet02")
 		return
 	}

@@ -21,24 +21,19 @@ func initTest() {
 
 func testDialogueStart() {
 	test.LookAtObject(ns.GetCaller())
+	data := loadMyQuestData(ns.GetCaller().Player())
 	ns.TellStory(audio.OgreBruteDie, "Do you want to help the mines?")
 	// Warrior dialogue.
-	for i := 0; i < len(warriorClass); i++ {
-		if ns.GetCaller() == warriorClass[i] {
-			return
-		}
+	if data.Character.Warrior {
+		return
 	}
 	// Conjurer dialogue.
-	for i := 0; i < len(ConjurerClass); i++ {
-		if ns.GetCaller() == ConjurerClass[i] {
-			return
-		}
+	if data.Character.Conjurer {
+		return
 	}
 	// Wizard dialogue.
-	for i := 0; i < len(wizardClass); i++ {
-		if ns.GetCaller() == wizardClass[i] {
-			return
-		}
+	if data.Character.Wizard {
+		return
 	}
 }
 
@@ -47,9 +42,9 @@ func testDialogueEnd() {
 	if ns.GetAnswer(test) == 0 { // Goodbye
 	}
 	if ns.GetAnswer(test) == 1 { // Yes
-		if !data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
-			updateMyQuestData(ns.GetCaller().Player(), func(data *MyQuestData) {
-				data.TroubleAtTheManaMines = true
+		if !data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
+			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+				data.Quest.TroubleAtTheManaMines = true
 			})
 		}
 	}

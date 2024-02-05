@@ -13,7 +13,6 @@ var playerCount []ns.Obj
 var wizardClass []ns.Obj
 var warriorClass []ns.Obj
 var ConjurerClass []ns.Obj
-var fireKnight []ns.Obj
 
 // Initial server boot function.
 func init() {
@@ -36,38 +35,38 @@ func init() {
 		initOsborn()
 		initTest()
 	})
-	checkClass()
+	checkClass(ns.GetHost().Player())
 	ns.PrintStrToAll("Welcome to the NoxWorld server.")
-	//ns.OnPlayerJoin(playerJoin)
-	//ns.OnPlayerLeave(playerLeave)
-	//ns.OnPlayerDeath(playerDeath)
-}
-
-func playerJoin() {
+	ns.Runtime().OnPlayerJoin(playerJoin)
 
 }
 
-func playerLeave() {
-
+func playerJoin(p ns.Player) bool {
+	ns.PrintStrToAll("NewPlayer joined")
+	checkClass(p)
+	return true
 }
 
-func playerDeath() {
-
-}
-
-func checkClass() {
+func checkClass(p ns.Player) {
 	// check the character's class and add them into the array.
-	for i := 0; i < len(ns.Players()); i++ {
-		mana := ns.Players()[i].Unit().MaxMana()
-		if mana == 450 {
-			wizardClass = append(wizardClass, ns.Players()[i].Unit())
-		}
-		if mana == 375 {
-			ConjurerClass = append(ConjurerClass, ns.Players()[i].Unit())
-		}
-		if mana == 0 {
-			warriorClass = append(warriorClass, ns.Players()[i].Unit())
-		}
+	mana := p.Unit().MaxMana()
+	if mana == 450 {
+		wizardClass = append(wizardClass, p.Unit())
+		updateMyQuestData(p, func(data *MyAccountData) {
+			data.Character.Wizard = true
+		})
+	}
+	if mana == 375 {
+		ConjurerClass = append(ConjurerClass, p.Unit())
+		updateMyQuestData(p, func(data *MyAccountData) {
+			data.Character.Conjurer = true
+		})
+	}
+	if mana == 0 {
+		warriorClass = append(warriorClass, p.Unit())
+		updateMyQuestData(p, func(data *MyAccountData) {
+			data.Character.Warrior = true
+		})
 	}
 }
 

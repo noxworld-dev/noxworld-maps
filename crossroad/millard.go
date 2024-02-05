@@ -25,15 +25,15 @@ func initMillard() {
 func millardDialogueStart() {
 	millard.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+	if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 		ns.SetDialog(millard, ns.DialogNext, millardDialogueManaMinesQuest, millardDialogueManaMinesQuest)
 		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:MineGuardA") // You have arrived! Lives are at stake! Please hurry to the mines, just west, down the path. The Foreman is waiting for you outside the Miner's Lodge. He'll direct you from there.
-		updateMyQuestData(ns.GetCaller().Player(), func(data *MyQuestData) {
-			data.TroubleAtTheManaMines = true
+		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+			data.Quest.TroubleAtTheManaMines = true
 		})
 		return
 	}
-	if data.TroubleAtTheManaMinesCompleted {
+	if data.Quest.TroubleAtTheManaMinesCompleted {
 		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:MineGuardC") // Your valor knows no peer. We all thank you for saving our men.
 		return
 	}
@@ -44,7 +44,7 @@ func millardDialogueStart() {
 func millardDialogueManaMinesQuest() {
 	millard.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	if !data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
+	if !data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 		resetMillardDialogue()
 	} else {
 		ns.SetDialog(millard, ns.DialogNormal, millardDialogueManaMinesQuest, millardDialogueEnd)

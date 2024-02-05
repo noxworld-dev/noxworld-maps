@@ -50,27 +50,21 @@ func kirikDialogueStart() {
 	kirik.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
-	for i := 0; i < len(warriorClass); i++ {
-		if ns.GetCaller() == warriorClass[i] {
-			ns.TellStory(audio.HumanMaleEatFood, "War03a:GalavaGuardEnd") // Begone Warrior before I blast you.
-			return
-		}
+	if data.Character.Warrior {
+		ns.TellStory(audio.HumanMaleEatFood, "War03a:GalavaGuardEnd") // Begone Warrior before I blast you.
+		return
 	}
 	// Conjurer dialogue.
-	for i := 0; i < len(ConjurerClass); i++ {
-		if ns.GetCaller() == ConjurerClass[i] {
-			if data.TroubleAtTheManaMines && !data.TroubleAtTheManaMinesCompleted {
-				ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
-				return
-			}
+	if data.Character.Conjurer {
+		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
+			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
 			return
 		}
+		return
 	}
 	// Wizard dialogue.
-	for i := 0; i < len(wizardClass); i++ {
-		if ns.GetCaller() == wizardClass[i] {
-			return
-		}
+	if data.Character.Wizard {
+		return
 	}
 }
 

@@ -25,34 +25,48 @@ func initOllie() {
 func commandOllie(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 	if p != nil {
 		switch msg {
-		case "come":
-
+		case "come", "Come", "Come!", "come!", "come.", "Come.", "Here!", "here.", "here", "Here", "here!", "Ollie", "ollie", "Ollie!", "ollie!", "Here boy!", "Here girl!", "here boy!", "here girl!", "here boy", "here girl", "Here boy", "Here girl":
+			if !followPlayer {
+				followPlayer = true
+				ollie.Follow(p.Unit())
+				ollie.Chat("War05A.scr:HoundGreeting")
+				ns.NewTimer(ns.Seconds(8), func() {
+					followPlayer = false
+					place()
+				})
+			}
 		}
 	}
 	return msg
 }
 
 func place() {
-	ollie.Guard(ollieSpawn, ollieSpawn, 300)
-	ns.NewTimer(ns.Seconds(20), func() {
-		explore()
-	})
+	if !followPlayer {
+		ollie.Guard(ollieSpawn, ollieSpawn, 300)
+		ns.NewTimer(ns.Seconds(20), func() {
+			explore()
+		})
+	}
 }
 
 func explore() {
-	ollie.Wander()
-	ns.NewTimer(ns.Seconds(5), func() {
-		beg()
-	})
+	if !followPlayer {
+		ollie.Wander()
+		ns.NewTimer(ns.Seconds(5), func() {
+			beg()
+		})
+	}
 }
 
 func beg() {
-	target := ns.FindClosestObject(ollie, ns.HasTypeName{"NPC", "NewPlayer"})
-	ollie.Follow(target)
-	if ns.Random(1, 4) == 1 {
-		ollie.Chat("War05A.scr:HoundGreeting")
+	if !followPlayer {
+		target := ns.FindClosestObject(ollie, ns.HasTypeName{"NPC", "NewPlayer"})
+		ollie.Follow(target)
+		if ns.Random(1, 4) == 1 {
+			ollie.Chat("War05A.scr:HoundGreeting")
+		}
+		ns.NewTimer(ns.Seconds(8), func() {
+			place()
+		})
 	}
-	ns.NewTimer(ns.Seconds(8), func() {
-		place()
-	})
 }
