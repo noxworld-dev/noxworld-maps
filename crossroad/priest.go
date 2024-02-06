@@ -22,7 +22,8 @@ func priestDialogueStart() {
 }
 
 func priestDialogueEnd() {
-	if ns.GetAnswer(priest) == 1 {
+	switch ns.GetAnswer(priest) {
+	case ns.AnswerYes:
 		gold := ns.GetCaller().GetGold()
 		if gold >= 50000 {
 			ns.GetCaller().ChangeGold(-50000)
@@ -33,8 +34,8 @@ func priestDialogueEnd() {
 			ns.SetDialog(priest, ns.DialogNormal, endDialogue, resetPriestDialogue)
 			ns.TellStory(audio.SwordsmanHurt, "I'm sorry. You don't have enough gold. Come back when you've got enough.")
 		}
-	}
-	if ns.GetAnswer(priest) == 2 {
+	case ns.AnswerNo:
+		// No
 	}
 }
 

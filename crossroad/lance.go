@@ -44,12 +44,11 @@ func lanceDialogueStart() {
 	}
 	// Wizard dialogue.
 	if data.Character.Wizard {
-		rnd := ns.Random(1, 3)
-		if rnd == 1 {
+		switch ns.Random(1, 3) {
+		case 1:
 			ns.AudioEvent(audio.TauntShakeFist, lance)
 			lance.ChatStr("Get lost!")
-		}
-		if rnd == 2 {
+		case 2:
 			if lance.Pos().Sub(ns.GetCaller().Pos()).Len() <= 50 {
 				lance.LookAtObject(ns.GetCaller())
 				lance.HitMelee(lance.Pos())
@@ -61,8 +60,7 @@ func lanceDialogueStart() {
 				ns.AudioEvent(audio.TauntShakeFist, lance)
 				lance.ChatStr("You rat!")
 			}
-		}
-		if rnd == 3 {
+		case 3:
 			ns.AudioEvent(audio.TauntShakeFist, lance)
 			lance.ChatStr("No Wizards allowed!")
 		}
@@ -71,13 +69,16 @@ func lanceDialogueStart() {
 }
 
 func lanceDialogueEnd() {
-	if ns.GetAnswer(lance) == 1 { // Yes
-	}
-	if ns.GetAnswer(lance) == 2 { // No
+	switch ns.GetAnswer(lance) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetLanceDialogue() {
 	ns.SetDialog(lance, ns.DialogNormal, lanceDialogueStart, lanceDialogueEnd)
-	return
 }

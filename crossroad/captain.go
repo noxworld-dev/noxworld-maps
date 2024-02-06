@@ -157,11 +157,14 @@ func captainDialogueWizardStartingQuest() {
 }
 
 func captainDialogueEnd() {
-	if ns.GetAnswer(captain) == 1 { // Yes
+	switch ns.GetAnswer(captain) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
-	if ns.GetAnswer(captain) == 2 { // No
-	}
-	return
 }
 
 func resetCaptainDialogue() {

@@ -60,15 +60,16 @@ func horstDialogueManaMinesQuest() {
 }
 
 func horstDialogueEnd() {
-	if ns.GetAnswer(horst) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(horst) == 1 { // Yes
-	}
-	if ns.GetAnswer(horst) == 2 { // No
+	switch ns.GetAnswer(horst) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetHorstDialogue() {
 	ns.SetDialog(horst, ns.DialogNormal, horstDialogueStart, horstDialogueEnd)
-	return
 }

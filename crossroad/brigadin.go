@@ -39,15 +39,16 @@ func brigadinDialogueStart() {
 }
 
 func brigadinDialogueEnd() {
-	if ns.GetAnswer(brigadin) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(brigadin) == 1 { // Yes
-	}
-	if ns.GetAnswer(brigadin) == 2 { // No
+	switch ns.GetAnswer(brigadin) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetBrigadinDialogue() {
 	ns.SetDialog(brigadin, ns.DialogNormal, brigadinDialogueStart, brigadinDialogueEnd)
-	return
 }

@@ -39,16 +39,17 @@ func testDialogueStart() {
 
 func testDialogueEnd() {
 	data := loadMyQuestData(ns.GetCaller().Player())
-	if ns.GetAnswer(test) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(test) == 1 { // Yes
+	switch ns.GetAnswer(test) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
 		if !data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
 				data.Quest.TroubleAtTheManaMines = true
 			})
 		}
-	}
-	if ns.GetAnswer(test) == 2 { // No
+	case ns.AnswerNo:
+		// No
 	}
 }
 

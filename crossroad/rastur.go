@@ -49,11 +49,13 @@ func rasturDialogueStart() {
 }
 
 func rasturDialogueEnd() {
-	if ns.GetAnswer(rastur) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(rastur) == 1 { // Yes
-	}
-	if ns.GetAnswer(rastur) == 2 { // No
+	switch ns.GetAnswer(rastur) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 

@@ -169,12 +169,11 @@ func quenchWeapon() {
 		water := ns.FindClosestObject(blacksmith, ns.HasTypeName{"WaterBarrel"}, ns.InCirclef{Center: blacksmith, R: 200})
 		if water == nil {
 			// Call next --> sell to vendor.
-			rnd := ns.Random(1, 5)
-			if rnd == 1 {
+			switch ns.Random(1, 5) {
+			case 1:
 				ns.AudioEvent(audio.TauntShakeFist, blacksmith)
 				blacksmith.ChatStr("Where's my quenching water?")
-			}
-			if rnd == 2 {
+			case 2:
 				ns.CreateObject("WaterBarrel", quenchingWaterSpawn)
 			}
 			quenching = false

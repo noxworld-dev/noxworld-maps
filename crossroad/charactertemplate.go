@@ -48,11 +48,13 @@ func templateDialogueManaMinesQuest() {
 }
 
 func templateDialogueEnd() {
-	if ns.GetAnswer(template) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(template) == 1 { // Yes
-	}
-	if ns.GetAnswer(template) == 2 { // No
+	switch ns.GetAnswer(template) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 

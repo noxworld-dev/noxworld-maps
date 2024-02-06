@@ -67,15 +67,16 @@ func janeroDialogueStart() {
 }
 
 func janeroDialogueEnd() {
-	if ns.GetAnswer(janero) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(janero) == 1 { // Yes
-	}
-	if ns.GetAnswer(janero) == 2 { // No
+	switch ns.GetAnswer(janero) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetJaneroDialogue() {
 	ns.SetDialog(janero, ns.DialogNormal, janeroDialogueStart, janeroDialogueEnd)
-	return
 }

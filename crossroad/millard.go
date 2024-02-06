@@ -38,7 +38,6 @@ func millardDialogueStart() {
 		return
 	}
 	ns.TellStory(audio.SwordsmanHurt, "War03a:MineGuard") // Sorry, the Mana Mines are closed.
-	return
 }
 
 func millardDialogueManaMinesQuest() {
@@ -53,15 +52,16 @@ func millardDialogueManaMinesQuest() {
 }
 
 func millardDialogueEnd() {
-	if ns.GetAnswer(millard) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(millard) == 1 { // Yes
-	}
-	if ns.GetAnswer(millard) == 2 { // No
+	switch ns.GetAnswer(millard) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetMillardDialogue() {
 	ns.SetDialog(millard, ns.DialogNormal, millardDialogueStart, millardDialogueEnd)
-	return
 }

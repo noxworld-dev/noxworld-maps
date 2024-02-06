@@ -69,15 +69,16 @@ func kirikDialogueStart() {
 }
 
 func kirikDialogueEnd() {
-	if ns.GetAnswer(kirik) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(kirik) == 1 { // Yes
-	}
-	if ns.GetAnswer(kirik) == 2 { // No
+	switch ns.GetAnswer(kirik) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetKirikDialogue() {
 	ns.SetDialog(kirik, ns.DialogNormal, kirikDialogueStart, kirikDialogueEnd)
-	return
 }
