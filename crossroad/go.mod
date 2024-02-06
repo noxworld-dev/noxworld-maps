@@ -1,6 +1,8 @@
 module noxworld
 
-go 1.19
+go 1.21
+
+toolchain go1.21.6
 
 require github.com/noxworld-dev/noxscript/ns/v4 v4.17.0
 
