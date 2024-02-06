@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 type MyAccountData struct {
@@ -14,10 +15,7 @@ type MyAccountData struct {
 		Health     int
 		Mana       int
 		Level      int
-		// Class
-		Warrior  bool
-		Conjurer bool
-		Wizard   bool
+		Class      player.Class
 		// Order
 		FireKnight bool
 	}

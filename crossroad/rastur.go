@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var rastur ns.Obj
@@ -23,37 +24,32 @@ func initRastur() {
 func rasturDialogueStart() {
 	rastur.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		ns.TellStory(audio.Guard1Hurt, "War03a:GalavaGuardWarn") // This is the checkpoint for travelers who wish to go to Castle Galava. Warriors are not allowed beyond these gates.
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		// If quest is active.
 		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.
 			return
 		}
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
+	case player.Wizard:
 		// If quest is active.
 		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.
 			return
 		}
-		return
 	}
 }
 
 func rasturDialogueEnd() {
-	if ns.GetAnswer(rastur) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(rastur) == 1 { // Yes
-	}
-	if ns.GetAnswer(rastur) == 2 { // No
+	switch ns.GetAnswer(rastur) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 

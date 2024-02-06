@@ -39,11 +39,13 @@ func osbornDialogueStart() {
 }
 
 func osbornDialogueEnd() {
-	if ns.GetAnswer(osborn) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(osborn) == 1 { // Yes
-	}
-	if ns.GetAnswer(osborn) == 2 { // No
+	switch ns.GetAnswer(osborn) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 

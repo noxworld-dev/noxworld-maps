@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var janero ns.Obj
@@ -23,8 +24,8 @@ func initJanero() {
 func janeroDialogueStart() {
 	janero.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		// Mayor Theogrin questline.
 		if data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1Intro") // Greetings! You must be the great Warrior Horrendous dispatched to aid our beloved Village of Ix! Mayor Theogrin is expecting you.
@@ -34,10 +35,7 @@ func janeroDialogueStart() {
 			ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
 			return
 		}
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		// QUEST: MayorTheogrinNeedsHelp
 		if data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1End") // The gates are unlocked so you may enter the Village. Delay no longer! The Mayor needs your help!
@@ -48,10 +46,7 @@ func janeroDialogueStart() {
 			ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
 			return
 		}
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
+	case player.Wizard:
 		// QUEST: MayorTheogrinNeedsHelp
 		if data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1End") // The gates are unlocked so you may enter the Village. Delay no longer! The Mayor needs your help!
@@ -62,20 +57,20 @@ func janeroDialogueStart() {
 			ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
 			return
 		}
-		return
 	}
 }
 
 func janeroDialogueEnd() {
-	if ns.GetAnswer(janero) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(janero) == 1 { // Yes
-	}
-	if ns.GetAnswer(janero) == 2 { // No
+	switch ns.GetAnswer(janero) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
 func resetJaneroDialogue() {
 	ns.SetDialog(janero, ns.DialogNormal, janeroDialogueStart, janeroDialogueEnd)
-	return
 }

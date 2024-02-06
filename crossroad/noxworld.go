@@ -2,6 +2,7 @@ package noxworld
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 // Ideas:
@@ -49,25 +50,17 @@ func playerJoin(p ns.Player) bool {
 
 func checkClass(p ns.Player) {
 	// check the character's class and add them into the array.
-	mana := p.Unit().MaxMana()
-	if mana == 450 {
+	switch p.Unit().GetClass() {
+	case player.Wizard:
 		wizardClass = append(wizardClass, p.Unit())
-		updateMyQuestData(p, func(data *MyAccountData) {
-			data.Character.Wizard = true
-		})
-	}
-	if mana == 375 {
+	case player.Conjurer:
 		ConjurerClass = append(ConjurerClass, p.Unit())
-		updateMyQuestData(p, func(data *MyAccountData) {
-			data.Character.Conjurer = true
-		})
-	}
-	if mana == 0 {
+	case player.Warrior:
 		warriorClass = append(warriorClass, p.Unit())
-		updateMyQuestData(p, func(data *MyAccountData) {
-			data.Character.Warrior = true
-		})
 	}
+	updateMyQuestData(p, func(data *MyAccountData) {
+		data.Character.Class = p.Unit().GetClass()
+	})
 }
 
 // Server Commands.

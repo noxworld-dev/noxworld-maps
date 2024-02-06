@@ -2,6 +2,7 @@ package noxworld
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var template ns.Obj
@@ -22,17 +23,13 @@ func initTemplate() {
 func templateDialogueStart() {
 	template.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
-		return
+	switch data.Character.Class {
+	case player.Warrior:
+		// Warrior dialogue.
+	case player.Conjurer:
+		// Conjurer dialogue.
+	case player.Wizard:
+		// Wizard dialogue.
 	}
 }
 
@@ -48,11 +45,13 @@ func templateDialogueManaMinesQuest() {
 }
 
 func templateDialogueEnd() {
-	if ns.GetAnswer(template) == 0 { // Goodbye
-	}
-	if ns.GetAnswer(template) == 1 { // Yes
-	}
-	if ns.GetAnswer(template) == 2 { // No
+	switch ns.GetAnswer(template) {
+	case ns.AnswerGoodbye:
+		// Goodbye
+	case ns.AnswerYes:
+		// Yes
+	case ns.AnswerNo:
+		// No
 	}
 }
 
