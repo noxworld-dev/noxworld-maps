@@ -17,4 +17,4 @@ jobs:
       with:
         go-version: '1.21'
     - name: Test
-      run: cd ./crossroad && go build -v
+      run: cd ./crossroad && go test -v ./...

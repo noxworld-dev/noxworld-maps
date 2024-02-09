@@ -1,4 +1,6 @@
-github.com/noxworld-dev/noxscript/ns/v4 v4.17.0 h1:pkPi/avAHgu2QSIYz47/18g87bWy0bPva55IliH2TEs=
-github.com/noxworld-dev/noxscript/ns/v4 v4.17.0/go.mod h1:H6W25adFWdP6r95qVMThXMad0kgfyi6OncQmk1INecc=
+github.com/noxworld-dev/noxscript/ns/v4 v4.18.0 h1:C9nmyV/pyVl2JQlHgcM6UV/CvOaDotRQNsdIv4z//fU=
+github.com/noxworld-dev/noxscript/ns/v4 v4.18.0/go.mod h1:5EClTEElcEsAKZBAW4lp+23N0s6X+P/832hJT0iSIOA=
 github.com/noxworld-dev/opennox-lib v0.0.0-20240128132430-629f4ef030f1 h1:e5A13zzjmF0BmeifGg/MZhOFOzj0oXzsV9j6s9JfgsE=
 github.com/noxworld-dev/opennox-lib v0.0.0-20240128132430-629f4ef030f1/go.mod h1:bLRf6dw+1ByqvaLcBjJoUX/BV546YfQrk01SR58hCKA=
+golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa h1:FRnLl4eNAQl8hwxVVC17teOw8kdjVDVAiFMtgUdTSRQ=
+golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa/go.mod h1:zk2irFbV9DP96SEBUUAy67IdHUaZuSnrz1n472HUCLE=
