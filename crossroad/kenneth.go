@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var kenneth ns.Obj
@@ -49,18 +50,12 @@ func kennethManageDoorLock() {
 func kennethDialogueStart() {
 	kenneth.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		ns.TellStory(audio.ArcherHurt, "War03a:DunMirGuard1") //  The Fortress of Dün Mir is home of the legendary Fire Knights.
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		ns.TellStory(audio.ArcherHurt, "War03a:DunMirGuard1") //  The Fortress of Dün Mir is home of the legendary Fire Knights.
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
+	case player.Wizard:
 		switch ns.Random(1, 3) {
 		case 1:
 			ns.AudioEvent(audio.TauntShakeFist, kenneth)
@@ -81,7 +76,6 @@ func kennethDialogueStart() {
 			ns.AudioEvent(audio.TauntShakeFist, kenneth)
 			kenneth.ChatStr("Beat it!")
 		}
-		return
 	}
 }
 

@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 func dialogExampleCaptain() {
@@ -57,8 +58,8 @@ func initCaptain() {
 func captainDialogueStart() {
 	captain.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Check if the player is a Wizard.
-	if data.Character.Wizard {
+	switch data.Character.Class {
+	case player.Wizard:
 		// Wizards starting quest.
 		if !data.Quest.BecomeTheWizardApprentice && !data.Quest.BecomeTheWizardApprenticeCompleted {
 			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
@@ -85,9 +86,7 @@ func captainDialogueStart() {
 		// ns.TellStory(audio.HumanMaleEatFood, "War01a:CaptainTalk2dStart") // But find the smuggler's tunnel in the cavern and you are in!
 		// ns.TellStory(audio.HumanMaleEatFood, "Wiz06a:Captain2") // Invisibility will be invaluable for sneaking past the guards. The Lock spell will help keep anyone from following you on your way out. Good luck and good speed.
 		// ns.TellStory(audio.HumanMaleEatFood, "Wiz05C.scr:CaptainIdle") // Thanks again, Apprentice. You have performed a noble service, one which I can't easily repay... Thank you. I suppose you've outgrown being an apprentice.
-	}
-	// Check if the player is a Warrior.
-	if data.Character.Warrior {
+	case player.Warrior:
 		if !data.Quest.JoinTheFireKnights && !data.Quest.JoinTheFireKnightsCompleted {
 			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
 				data.Quest.JoinTheFireKnights = true
@@ -112,9 +111,7 @@ func captainDialogueStart() {
 		}
 		captain.ChatStr("works")
 		// War03b:AirshipCaptainIxSpeech : // What, ho! You've returned, lad, or should I say Warrior! Heh, heh, heh...
-	}
-	// Check if the player is a Conjurer.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		if data.Quest.TroubleAtTheManaMinesCompleted && !data.Quest.ExploreTheTombsOfValor && !data.Quest.ExploreTheTombsOfValorCompleted {
 			ns.TellStory(audio.HumanMaleEatFood, "Con03A.scr:JandorA") // Good work with the miners, lad! With the Mana supply reestablished, the wizards of Galava will be busy tonight. But if I know Hecubah, I fear rumors of her practicing the forbidden Black Arts may be true. And it is up to us to journey to the Field of Valor -- where you must find out for sure if she is communing with the Undead through her ancestors' occult art of necromancy.
 			return

@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var brigadin ns.Obj
@@ -24,17 +25,13 @@ func brigadinDialogueStart() {
 	brigadin.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		ns.TellStory(audio.SwordsmanHurt, "War03a:DunMirGuard3")
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
-		return
+	case player.Conjurer:
+		// Conjurer dialogue.
+	case player.Wizard:
+		// Wizard dialogue.
 	}
 }
 

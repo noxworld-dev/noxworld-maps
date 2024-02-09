@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var lance ns.Obj
@@ -23,8 +24,8 @@ func initLance() {
 func lanceDialogueStart() {
 	lance.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
 			return
@@ -32,18 +33,11 @@ func lanceDialogueStart() {
 			ns.TellStory(audio.FireKnight1Hurt, "War03a:DunMirGuard2") // You should be proud to serve Horrendous and the Fire Knights of Dün Mir.
 			return
 		}
-		return
-
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
 		}
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
+	case player.Wizard:
 		switch ns.Random(1, 3) {
 		case 1:
 			ns.AudioEvent(audio.TauntShakeFist, lance)
@@ -64,7 +58,6 @@ func lanceDialogueStart() {
 			ns.AudioEvent(audio.TauntShakeFist, lance)
 			lance.ChatStr("No Wizards allowed!")
 		}
-		return
 	}
 }
 

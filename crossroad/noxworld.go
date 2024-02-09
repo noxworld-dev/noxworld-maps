@@ -53,20 +53,14 @@ func checkClass(p ns.Player) {
 	switch p.Unit().GetClass() {
 	case player.Wizard:
 		wizardClass = append(wizardClass, p.Unit())
-		updateMyQuestData(p, func(data *MyAccountData) {
-			data.Character.Wizard = true
-		})
 	case player.Conjurer:
 		ConjurerClass = append(ConjurerClass, p.Unit())
-		updateMyQuestData(p, func(data *MyAccountData) {
-			data.Character.Conjurer = true
-		})
 	case player.Warrior:
 		warriorClass = append(warriorClass, p.Unit())
-		updateMyQuestData(p, func(data *MyAccountData) {
-			data.Character.Warrior = true
-		})
 	}
+	updateMyQuestData(p, func(data *MyAccountData) {
+		data.Character.Class = p.Unit().GetClass()
+	})
 }
 
 // Server Commands.

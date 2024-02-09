@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var kirik ns.Obj
@@ -49,22 +50,16 @@ func kirikManageDoorLock() {
 func kirikDialogueStart() {
 	kirik.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		ns.TellStory(audio.HumanMaleEatFood, "War03a:GalavaGuardEnd") // Begone Warrior before I blast you.
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
 			return
 		}
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
-		return
+	case player.Wizard:
+		// Wizard dialogue.
 	}
 }
 

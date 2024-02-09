@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var test ns.Obj
@@ -23,17 +24,13 @@ func testDialogueStart() {
 	test.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	ns.TellStory(audio.OgreBruteDie, "Do you want to help the mines?")
-	// Warrior dialogue.
-	if data.Character.Warrior {
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
-		return
+	switch data.Character.Class {
+	case player.Warrior:
+		// Warrior dialogue.
+	case player.Conjurer:
+		// Conjurer dialogue.
+	case player.Wizard:
+		// Wizard dialogue.
 	}
 }
 

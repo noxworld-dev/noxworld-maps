@@ -3,6 +3,7 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var horst ns.Obj
@@ -26,32 +27,25 @@ func initHorst() {
 func horstDialogueStart() {
 	horst.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Warrior dialogue.
-	if data.Character.Warrior {
+	switch data.Character.Class {
+	case player.Warrior:
 		// if mayor needs help
 		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
 			return
 		}
-		return
-	}
-	// Conjurer dialogue.
-	if data.Character.Conjurer {
+	case player.Conjurer:
 		// if mayor needs help
 		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
 			return
 		}
-		return
-	}
-	// Wizard dialogue.
-	if data.Character.Wizard {
+	case player.Wizard:
 		// if mayor needs help
 		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
 			return
 		}
-		return
 	}
 }
 
