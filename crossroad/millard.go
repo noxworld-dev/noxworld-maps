@@ -17,37 +17,31 @@ func initMillard() {
 	}
 	millardSpawn = millard.Pos()
 	ns.StoryPic(millard, "MalePic2")
-	ns.SetDialog(millard, ns.DialogNormal, millardDialogueStart, millardDialogueEnd)
+	ns.SetDialog(millard, ns.DialogNormal, millard_TroubleAtTheManaMines, millardDialogueEnd)
 	ns.Object("MineDoor1").Lock(true)
 	ns.Object("MineDoor2").Lock(true)
 }
 
-func millardDialogueStart() {
+func millard_TroubleAtTheManaMines() {
+	ns.AudioEvent(audio.NPCTalkable, millard)
 	millard.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-		ns.SetDialog(millard, ns.DialogNext, millardDialogueManaMinesQuest, millardDialogueManaMinesQuest)
+	switch data.Quest.General.TroubleAtTheManaMines {
+	case 0:
+		ns.TellStory(audio.SwordsmanHurt, "War03a:MineGuard") // Sorry, the Mana Mines are closed.
+	case 1:
+		ns.PrintStr("You have gained a new Quest.")
+		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
+		ns.SetDialog(millard, ns.DialogNext, millard_TroubleAtTheManaMines, millard_TroubleAtTheManaMines)
 		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:MineGuardA") // You have arrived! Lives are at stake! Please hurry to the mines, just west, down the path. The Foreman is waiting for you outside the Miner's Lodge. He'll direct you from there.
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.TroubleAtTheManaMines = true
+			data.Quest.General.TroubleAtTheManaMines = 2
 		})
-		return
-	}
-	if data.Quest.TroubleAtTheManaMinesCompleted {
-		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:MineGuardC") // Your valor knows no peer. We all thank you for saving our men.
-		return
-	}
-	ns.TellStory(audio.SwordsmanHurt, "War03a:MineGuard") // Sorry, the Mana Mines are closed.
-}
-
-func millardDialogueManaMinesQuest() {
-	millard.LookAtObject(ns.GetCaller())
-	data := loadMyQuestData(ns.GetCaller().Player())
-	if !data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-		resetMillardDialogue()
-	} else {
-		ns.SetDialog(millard, ns.DialogNormal, millardDialogueManaMinesQuest, millardDialogueEnd)
+	case 2:
+		ns.SetDialog(millard, ns.DialogNormal, millard_TroubleAtTheManaMines, millardDialogueEnd)
 		ns.TellStory(audio.HumanMaleEatFood, "Con03A.scr:MineGuardB") // The foreman will tell you the details of our crisis. He waits for you by the entrance of the mines.
+	case 3:
+		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:MineGuardC") // Your valor knows no peer. We all thank you for saving our men.
 	}
 }
 
@@ -63,5 +57,5 @@ func millardDialogueEnd() {
 }
 
 func resetMillardDialogue() {
-	ns.SetDialog(millard, ns.DialogNormal, millardDialogueStart, millardDialogueEnd)
+	ns.SetDialog(millard, ns.DialogNormal, millard_TroubleAtTheManaMines, millardDialogueEnd)
 }

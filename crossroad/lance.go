@@ -22,20 +22,13 @@ func initLance() {
 }
 
 func lanceDialogueStart() {
+	ns.AudioEvent(audio.FireKnight1Talkable, lance)
 	lance.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Character.Class {
 	case player.Warrior:
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
-			return
-		} else if data.Character.FireKnight {
+		if data.Character.FireKnight {
 			ns.TellStory(audio.FireKnight1Hurt, "War03a:DunMirGuard2") // You should be proud to serve Horrendous and the Fire Knights of Dün Mir.
-			return
-		}
-	case player.Conjurer:
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
 		}
 	case player.Wizard:
 		switch ns.Random(1, 3) {
@@ -57,6 +50,18 @@ func lanceDialogueStart() {
 		case 3:
 			ns.AudioEvent(audio.TauntShakeFist, lance)
 			lance.ChatStr("No Wizards allowed!")
+		}
+	}
+	lance_TroubleAtTheManaMines()
+}
+
+func lance_TroubleAtTheManaMines() {
+	data := loadMyQuestData(ns.GetCaller().Player())
+	switch data.Character.Class {
+	case player.Conjurer, player.Warrior:
+		switch data.Quest.General.TroubleAtTheManaMines {
+		case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:DunMirGuard2") // The Mana Mines are to the west of the Crossroads. You should return there.return
 		}
 	}
 }

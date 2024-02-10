@@ -17,6 +17,7 @@ func initPriest() {
 }
 
 func priestDialogueStart() {
+	ns.AudioEvent(audio.Wizard1Talkable, priest)
 	priest.LookAtObject(ns.GetCaller())
 	ns.TellStory(audio.HumanMaleEatFood, "Would you like to make a donation of 50.000 gold?")
 }
@@ -31,7 +32,7 @@ func priestDialogueEnd() {
 			Ankh.FlagsEnable(object.FlagNoPushCharacters)
 			Ankh.DeleteAfter(ns.Frames(1))
 		} else {
-			ns.SetDialog(priest, ns.DialogNormal, endDialogue, resetPriestDialogue)
+			ns.SetDialog(priest, ns.DialogNormal, endPriestDialogue, resetPriestDialogue)
 			ns.TellStory(audio.SwordsmanHurt, "I'm sorry. You don't have enough gold. Come back when you've got enough.")
 		}
 	case ns.AnswerNo:
@@ -39,9 +40,11 @@ func priestDialogueEnd() {
 	}
 }
 
+func endPriestDialogue() {
+}
+
 func resetPriestDialogue() {
 	ns.SetDialog(priest, ns.DialogYesNo, priestDialogueStart, priestDialogueEnd)
-	return
 }
 
 // Priest end.

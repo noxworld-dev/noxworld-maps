@@ -22,41 +22,33 @@ func initJanero() {
 }
 
 func janeroDialogueStart() {
+	ns.AudioEvent(audio.MaleNPC1Talkable, janero)
 	janero.LookAtObject(ns.GetCaller())
+	janero_MayorTheogrinNeedsHelp()
+	janero_TroubleAtTheManaMines()
+}
+
+func janero_MayorTheogrinNeedsHelp() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Character.Class {
 	case player.Warrior:
-		// Mayor Theogrin questline.
-		if data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
+		switch data.Quest.General.MayorTheogrinNeedsHelp {
+		case 1, 2, 3, 4, 5, 6, 7, 8, 9:
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1Intro") // Greetings! You must be the great Warrior Horrendous dispatched to aid our beloved Village of Ix! Mayor Theogrin is expecting you.
-			return
 		}
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
-			return
-		}
-	case player.Conjurer:
-		// QUEST: MayorTheogrinNeedsHelp
-		if data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
+	case player.Wizard, player.Conjurer:
+		switch data.Quest.General.MayorTheogrinNeedsHelp {
+		case 1, 2, 3, 4, 5, 6, 7, 8, 9:
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1End") // The gates are unlocked so you may enter the Village. Delay no longer! The Mayor needs your help!
-			return
 		}
-		// QUEST: TroubleAtTheManaMines
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
-			return
-		}
-	case player.Wizard:
-		// QUEST: MayorTheogrinNeedsHelp
-		if data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
-			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1End") // The gates are unlocked so you may enter the Village. Delay no longer! The Mayor needs your help!
-			return
-		}
-		// QUEST: TroubleAtTheManaMines
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
-			return
-		}
+	}
+}
+
+func janero_TroubleAtTheManaMines() {
+	data := loadMyQuestData(ns.GetCaller().Player())
+	switch data.Quest.General.TroubleAtTheManaMines {
+	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
 	}
 }
 

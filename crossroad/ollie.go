@@ -2,6 +2,7 @@ package noxworld
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/noxscript/ns/v4/audio"
 )
 
 var ollie ns.Obj
@@ -27,6 +28,7 @@ func commandOllie(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 		switch msg {
 		case "come", "Come", "Come!", "come!", "come.", "Come.", "Here!", "here.", "here", "Here", "here!", "Ollie", "ollie", "Ollie!", "ollie!", "Here boy!", "Here girl!", "here boy!", "here girl!", "here boy", "here girl", "Here boy", "Here girl":
 			if !followPlayer {
+				ns.AudioEvent(audio.WolfIdle, ollie)
 				followPlayer = true
 				ollie.Follow(p.Unit())
 				ollie.Chat("War05A.scr:HoundGreeting")
@@ -42,18 +44,24 @@ func commandOllie(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 
 func place() {
 	if !followPlayer {
+		ns.AudioEvent(audio.WolfIdle, ollie)
 		ollie.Guard(ollieSpawn, ollieSpawn, 300)
 		ns.NewTimer(ns.Seconds(20), func() {
-			explore()
+			if !followPlayer {
+				explore()
+			}
 		})
 	}
 }
 
 func explore() {
 	if !followPlayer {
+		ns.AudioEvent(audio.WolfRecognize, ollie)
 		ollie.Wander()
 		ns.NewTimer(ns.Seconds(5), func() {
-			beg()
+			if !followPlayer {
+				beg()
+			}
 		})
 	}
 }
@@ -61,12 +69,15 @@ func explore() {
 func beg() {
 	if !followPlayer {
 		target := ns.FindClosestObject(ollie, ns.HasTypeName{"NPC", "NewPlayer"})
+		ns.AudioEvent(audio.WolfIdle, ollie)
 		ollie.Follow(target)
 		if ns.Random(1, 4) == 1 {
 			ollie.Chat("War05A.scr:HoundGreeting")
 		}
 		ns.NewTimer(ns.Seconds(8), func() {
-			place()
+			if !followPlayer {
+				place()
+			}
 		})
 	}
 }

@@ -2,6 +2,7 @@ package noxworld
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/noxscript/ns/v4/audio"
 	"github.com/noxworld-dev/opennox-lib/player"
 )
 
@@ -31,16 +32,24 @@ func templateDialogueStart() {
 	case player.Wizard:
 		// Wizard dialogue.
 	}
+	// General Quests
+	template_FollowUpQuestDialogue()
 }
 
-func templateDialogueManaMinesQuest() {
-	template.LookAtObject(ns.GetCaller())
+func template_FollowUpQuestDialogue() {
 	data := loadMyQuestData(ns.GetCaller().Player())
-	if !data.Quest.FollowUpQuestDialogue && !data.Quest.FollowUpQuestDialogueCompleted {
-		resetMillardDialogue()
-	} else {
-		//ns.SetDialog(template, ns.DialogNormal, templateDialogueManaMinesQuest, templatedDialogueEnd)
-		//ns.TellStory(audio.HumanMaleEatFood, "DIALOG ADD HERE")
+	switch data.Quest.General.FollowUpQuestDialogue {
+	case 0: // Keep empthy: 0 = inactive/not accepted/not completed, 10 = completed
+	case 1:
+		ns.PrintStr("You have gained a new Quest.")
+		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
+		ns.TellStory(audio.HumanMaleEatFood, "FILL IN BLANKS") //
+		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+			FollowUpQuestDialogue := 2
+		})
+	case 2:
+	case 3:
+		// Always close dialogue with end and reset if used non normal dialogue.
 	}
 }
 
@@ -56,5 +65,6 @@ func templateDialogueEnd() {
 }
 
 func resetTemplateDialogue() {
+	ns.SetDialog(template, ns.DialogNormal, templateDialogueStart, templateDialogueEnd)
 	return
 }

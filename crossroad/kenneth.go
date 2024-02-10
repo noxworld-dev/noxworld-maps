@@ -48,6 +48,7 @@ func kennethManageDoorLock() {
 }
 
 func kennethDialogueStart() {
+	ns.AudioEvent(audio.FireKnight2Talkable, kenneth)
 	kenneth.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Character.Class {

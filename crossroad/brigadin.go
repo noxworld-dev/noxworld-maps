@@ -22,6 +22,7 @@ func initBrigadin() {
 }
 
 func brigadinDialogueStart() {
+	ns.AudioEvent(audio.FireKnight1Talkable, brigadin)
 	brigadin.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	// Warrior dialogue.

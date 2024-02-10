@@ -21,21 +21,20 @@ func initOsborn() {
 }
 
 func osbornDialogueStart() {
+	ns.AudioEvent(audio.NPCTalkable, osborn)
 	osborn.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
-	// Start LostSpectales quest.
-	if !data.Quest.LostSpectacles && !data.Quest.LostSpectaclesCompleted {
+	switch data.Quest.General.LostSpectacles {
+	case 0:
 		ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:HermitMeet01") // Gahhhhhh! No! Don't kill me! Oh. A young man?! I can't see well at all. But I know you're not one of those infernal bandits who stole my spectacles! I'm almost blind without them. If you could get them back, you'd save my life and I'd be eternally grateful.
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.LostSpectacles = true
+			data.Quest.General.LostSpectacles = 1
 		})
-		return
-	}
-	if data.Quest.LostSpectacles && !data.Quest.LostSpectaclesCompleted {
+	case 1:
 		ns.TellStory(audio.ArcherHurt, "Con03A.scr:HermitMeet02")
-		return
+	case 2:
+		ns.TellStory(audio.ArcherHurt, "Con03A.scr:HermitHappy") // My spectacles! You brought them back! May all that is great bless you! And please, take this scroll. It contains all I have learned about bats. It would be invaluable to any conjurer.
 	}
-	// on complete with spectacles // Con03A.scr:HermitHappy	My spectacles! You brought them back! May all that is great bless you! And please, take this scroll. It contains all I have learned about bats. It would be invaluable to any conjurer.
 }
 
 func osbornDialogueEnd() {
@@ -51,5 +50,4 @@ func osbornDialogueEnd() {
 
 func resetOsbornDialogue() {
 	ns.SetDialog(osborn, ns.DialogNormal, osbornDialogueStart, osbornDialogueEnd)
-	return
 }

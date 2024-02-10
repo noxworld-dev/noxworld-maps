@@ -25,32 +25,57 @@ func initHorst() {
 }
 
 func horstDialogueStart() {
+	ns.AudioEvent(audio.MaleNPC2Talkable, horst)
 	horst.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Character.Class {
 	case player.Warrior:
-		// if mayor needs help
-		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
-			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
-			return
-		}
 	case player.Conjurer:
-		// if mayor needs help
-		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
-			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
-			return
-		}
 	case player.Wizard:
-		// if mayor needs help
-		if !data.Quest.MayorTheogrinNeedsHelp && !data.Quest.MayorTheogrinNeedsHelpCompleted {
+	}
+	horst_TroubleAtTheManaMines()
+	horst_MayorTheogrinNeedsHelp()
+}
+
+func horst_MayorTheogrinNeedsHelp() {
+	data := loadMyQuestData(ns.GetCaller().Player())
+	switch data.Quest.General.FollowUpQuestDialogue {
+	case 0: // Keep empthy: 0 = inactive/not accepted/not completed, 10 = completed
+	case 1:
+		switch data.Character.Class {
+		case player.Warrior:
+			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
+			ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
+			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+				data.Quest.General.MayorTheogrinNeedsHelp = 2
+			})
+		case player.Conjurer:
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
-			return
+			ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
+			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+				data.Quest.General.MayorTheogrinNeedsHelp = 2
+			})
+		case player.Wizard:
+			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2End") // The gates are unlocked so you may enter the Village. Delay no further. The Mayor needs your help!
+			ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
+			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+				data.Quest.General.MayorTheogrinNeedsHelp = 2
+			})
 		}
+	case 2:
+	case 3:
+		// Always close dialogue with end and reset if used non normal dialogue.
 	}
 }
 
-func horstDialogueManaMinesQuest() {
-	ns.TellStory(audio.HumanMaleEatApple, "Con03A.scr:IxGuard2") // Good luck in the mines, boy. Watch out for bandits on the way!
+func horst_TroubleAtTheManaMines() {
+	data := loadMyQuestData(ns.GetCaller().Player())
+	switch data.Quest.General.TroubleAtTheManaMines {
+	case 0:
+	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		ns.TellStory(audio.HumanMaleEatApple, "Con03A.scr:IxGuard2") // Good luck in the mines, boy. Watch out for bandits on the way!
+		// Always close dialogue with end and reset if used non normal dialogue.
+	}
 }
 
 func horstDialogueEnd() {

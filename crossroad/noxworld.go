@@ -15,6 +15,11 @@ var wizardClass []ns.Obj
 var warriorClass []ns.Obj
 var ConjurerClass []ns.Obj
 
+// Map Entrance/Exit
+var IxEntrance ns.Obj
+var GalavaEntrance ns.Obj
+var DunMirEntrance ns.Obj
+
 // Initial server boot function.
 func init() {
 	ns.Music(22, 100)
@@ -34,16 +39,18 @@ func init() {
 		initRastur()
 		initMillard()
 		initOsborn()
+		// Not in Crossroads
+		initWizardApprentice()
+		initHorvath()
+		// TEST
 		initTest()
 	})
 	checkClass(ns.GetHost().Player())
 	ns.PrintStrToAll("Welcome to the NoxWorld server.")
 	ns.Runtime().OnPlayerJoin(playerJoin)
-
 }
 
 func playerJoin(p ns.Player) bool {
-	ns.PrintStrToAll("NewPlayer joined")
 	checkClass(p)
 	return true
 }
@@ -67,12 +74,7 @@ func checkClass(p ns.Player) {
 func onCommand(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 	if p != nil {
 		switch msg {
-		case "login Ephreaym":
-			if p.Name() == "Ephreaym" {
-				p.Unit().DestroyChat()
-			} else {
-				ns.PrintStrToAll("Invalid username or password.")
-			}
+		case "example":
 		}
 	}
 	return msg
@@ -81,27 +83,8 @@ func onCommand(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 func OnFrame() {
 }
 
-func endDialogue() {
-	return
-}
-
 func forLoopExample() {
 	//  for i := 0; i < len(arrayname); i++ {
 	//		arrayname[i].Enchant(enchant.ANCHORED, ns.Frames(1))
 	//	}
 }
-
-//var dataByObject = make(map[ns.Obj]*Data)
-//
-//type Data struct {
-//   Level int
-//}
-//
-//func getData(obj ns.Obj) *Data {
-//   d := dataByObject[obj]
-//   if d == nil {
-//      d = new(Data)
-//      dataByObject[obj] = d
-//   }
-//   return d
-//}

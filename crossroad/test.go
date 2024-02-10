@@ -3,7 +3,6 @@ package noxworld
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
-	"github.com/noxworld-dev/opennox-lib/player"
 )
 
 var test ns.Obj
@@ -24,14 +23,7 @@ func testDialogueStart() {
 	test.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	ns.TellStory(audio.OgreBruteDie, "Do you want to help the mines?")
-	switch data.Character.Class {
-	case player.Warrior:
-		// Warrior dialogue.
-	case player.Conjurer:
-		// Conjurer dialogue.
-	case player.Wizard:
-		// Wizard dialogue.
-	}
+
 }
 
 func testDialogueEnd() {
@@ -40,16 +32,16 @@ func testDialogueEnd() {
 	case ns.AnswerGoodbye:
 		// Goodbye
 	case ns.AnswerYes:
-		if !data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-				data.Quest.TroubleAtTheManaMines = true
-			})
-		}
+		ns.PrintStr("You have gained a new Quest.")
+		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
+		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
+			data.Quest.General.TroubleAtTheManaMines = 1
+		})
 	case ns.AnswerNo:
 		// No
 	}
 }
 
 func resetTestDialogue() {
-	return
+	ns.SetDialog(test, ns.DialogYesNo, testDialogueStart, testDialogueEnd)
 }

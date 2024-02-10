@@ -48,18 +48,26 @@ func kirikManageDoorLock() {
 }
 
 func kirikDialogueStart() {
+	ns.AudioEvent(audio.Guard2Talkable, kirik)
 	kirik.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Character.Class {
 	case player.Warrior:
 		ns.TellStory(audio.HumanMaleEatFood, "War03a:GalavaGuardEnd") // Begone Warrior before I blast you.
-	case player.Conjurer:
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
-			return
-		}
 	case player.Wizard:
 		// Wizard dialogue.
+	}
+	kirik_TroubleAtTheManaMines()
+}
+
+func kirik_TroubleAtTheManaMines() {
+	data := loadMyQuestData(ns.GetCaller().Player())
+	switch data.Quest.General.TroubleAtTheManaMines {
+	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		switch data.Character.Class {
+		case player.Conjurer:
+			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.
+		}
 	}
 }
 

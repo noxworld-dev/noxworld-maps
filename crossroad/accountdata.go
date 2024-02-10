@@ -17,44 +17,56 @@ type MyAccountData struct {
 		Level      int
 		Class      player.Class
 		// Order
-		FireKnight bool
+		FireKnight      bool
+		OrderOfOblivion bool
 	}
 	Quest struct {
-		// Warrior questline
-		JoinTheFireKnights          bool
-		JoinTheFireKnightsCompleted bool
-		// Conjurer questline
-		// Wizard questline
-		BecomeTheWizardApprentice          bool
-		BecomeTheWizardApprenticeCompleted bool
-		// Crossroads
-		LostSpectacles          bool
-		LostSpectaclesCompleted bool
-		// Mana Mines
-		TroubleAtTheManaMines          bool
-		TroubleAtTheManaMinesCompleted bool
-		// Tomb of Valor
-		ExploreTheTombsOfValor          bool
-		ExploreTheTombsOfValorCompleted bool
-		// Ix
-		// Mayor Theogrin
-		MayorTheogrinNeedsHelp          bool
-		MayorTheogrinNeedsHelpCompleted bool
-		// Dun Mir
-		// Gearheart
-		ResearchingMechanicalGolems          bool
-		ResearchingMechanicalGolemsCompleted bool
-		AlternativeEnergySource              bool
-		AlternativeEnergySourceCompleted     bool
-		SuitUp                               bool
-		SuitUpCompleted                      bool
-		TestDrive                            bool
-		TestDriveCompleted                   bool
-		Upgrade                              bool
-		UpgradeCompleted                     bool
-		// Example for template
-		FollowUpQuestDialogue          bool
-		FollowUpQuestDialogueCompleted bool
+		// 1 == quest accept
+		// 2 == quest active
+		// 3 == quest completed
+		General struct {
+			// Osborn
+			LostSpectacles int
+			// Mana Mines
+			TroubleAtTheManaMines int
+			// Tomb of Valor
+			ExploreTheTombsOfValor int
+			// Ix
+			// Mayor Theogrin
+			MayorTheogrinNeedsHelp int
+
+			// Dun Mir
+			// Gearheart
+			// Mech suit questline
+			//ResearchingMechanicalGolems          bool
+			//ResearchingMechanicalGolemsCompleted bool
+			//AlternativeEnergySource              bool
+			//AlternativeEnergySourceCompleted     bool
+			//SuitUp                               bool
+			//SuitUpCompleted                      bool
+			//TestDrive                            bool
+			//TestDriveCompleted                   bool
+			//Upgrade                              bool
+			//UpgradeCompleted                     bool
+			// Example for template
+			FollowUpQuestDialogue int
+		}
+		Warrior struct {
+			// Warrior questline
+			JoinTheFireKnights int
+		}
+		Conjurer struct {
+			// Conjurer questline
+			BecomeTheConjurerApprentice int
+		}
+		Wizard struct {
+			// Wizard questline
+			BecomeTheWizardApprentice        int
+			TravelToTheApprenticeHouse       int
+			FindApprentice                   int
+			TellHorvathYouFoundTheApprentice int
+			GoToHorvathHisOffice             int
+		}
 	}
 }
 

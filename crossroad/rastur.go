@@ -22,22 +22,23 @@ func initRastur() {
 }
 
 func rasturDialogueStart() {
+	ns.AudioEvent(audio.Guard1Talkable, rastur)
 	rastur.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Character.Class {
 	case player.Warrior:
 		ns.TellStory(audio.Guard1Hurt, "War03a:GalavaGuardWarn") // This is the checkpoint for travelers who wish to go to Castle Galava. Warriors are not allowed beyond these gates.
-	case player.Conjurer:
-		// If quest is active.
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
+	}
+	rastur_TroubleAtTheManaMines()
+}
+
+func rastur_TroubleAtTheManaMines() {
+	data := loadMyQuestData(ns.GetCaller().Player())
+	switch data.Quest.General.TroubleAtTheManaMines {
+	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		switch data.Character.Class {
+		case player.Wizard, player.Conjurer:
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.
-			return
-		}
-	case player.Wizard:
-		// If quest is active.
-		if data.Quest.TroubleAtTheManaMines && !data.Quest.TroubleAtTheManaMinesCompleted {
-			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.
-			return
 		}
 	}
 }
@@ -55,5 +56,4 @@ func rasturDialogueEnd() {
 
 func resetRasturDialogue() {
 	ns.SetDialog(rastur, ns.DialogNormal, rasturDialogueStart, rasturDialogueEnd)
-	return
 }
