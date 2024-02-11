@@ -20,7 +20,10 @@ var IxEntrance ns.Obj
 var GalavaEntrance ns.Obj
 var DunMirEntrance ns.Obj
 
-var lateInit []func()
+var (
+	isTesting = false
+	lateInit  []func()
+)
 
 func OnLateInit(fnc func()) {
 	lateInit = append(lateInit, fnc)
@@ -31,6 +34,9 @@ func init() {
 	ns.Music(22, 100)
 	ns.OnChat(onCommand)
 	ns.NewTimer(ns.Frames(5), func() {
+		if isTesting {
+			return
+		}
 		for _, fnc := range lateInit {
 			fnc()
 		}

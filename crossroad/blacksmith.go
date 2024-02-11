@@ -193,7 +193,11 @@ func (b *Blacksmith) quenchWeapon() {
 	water := ns.FindClosestObject(b.blacksmith, ns.HasTypeName{"WaterBarrel"}, ns.InCirclef{Center: b.blacksmith, R: 200})
 	if water == nil {
 		// Call next --> sell to vendor.
-		switch ns.Random(1, 5) {
+		rnd := 2
+		if !isTesting {
+			rnd = ns.Random(1, 5)
+		}
+		switch rnd {
 		case 1:
 			ns.AudioEvent(audio.TauntShakeFist, b.blacksmith)
 			b.blacksmith.ChatStr("Where's my quenching water?")
@@ -207,7 +211,7 @@ func (b *Blacksmith) quenchWeapon() {
 		water.Freeze(true)
 		b.blacksmith.WalkTo(water.Pos())
 		b.blacksmith.OnEvent(ns.EventCollision, func() {
-			if ns.GetCaller() != water {
+			if caller := ns.GetCaller(); caller != water {
 				return
 			}
 			if !b.quenching {
