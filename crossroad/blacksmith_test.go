@@ -44,94 +44,81 @@ func TestBlacksmith(t *testing.T) {
 		}
 
 		// Start heating immediately
-		must.True(t, b.heatingColdSword)
+		must.EqOp(t, BlacksmithHeatingColdSword, b.state)
 		must.EqOp(t, 1, b.heatCount)
 		must.True(t, npc.HasEquipment(cold))
 
 		// Heating it progress
 		r.UpdateFor(time.Second)
-		must.True(t, b.heatingColdSword)
+		must.EqOp(t, BlacksmithHeatingColdSword, b.state)
 		must.EqOp(t, 2, b.heatCount)
 		must.True(t, npc.HasEquipment(cold))
 		r.UpdateFor(3 * time.Second)
 
 		// Sword is getting warm
-		must.False(t, b.heatingColdSword)
-		must.True(t, b.heatingWarmSword)
+		must.EqOp(t, BlacksmithHeatingWarmSword, b.state)
 		must.EqOp(t, 6, b.heatCount)
 		must.True(t, npc.HasEquipment(warm))
 		r.UpdateFor(4 * time.Second)
 
 		// Sword is getting hot
-		must.False(t, b.heatingWarmSword)
-		must.True(t, b.heatingHotSword)
+		must.EqOp(t, BlacksmithHeatingHotSword, b.state)
 		must.EqOp(t, 11, b.heatCount)
 		must.True(t, npc.HasEquipment(hot))
 		r.UpdateFor(4 * time.Second)
 
 		// Starts forging
-		must.False(t, b.heatingHotSword)
-		must.True(t, b.forging)
+		must.EqOp(t, BlacksmithForging, b.state)
 		must.EqOp(t, 0, b.heatCount)
 		must.EqOp(t, 1, b.strikeCount)
-		must.False(t, b.swordCooledDown)
 		must.True(t, npc.HasEquipment(hm))
 		r.UpdateFor(5 * time.Second)
 
 		// Sword cooled down
-		must.False(t, b.forging)
-		must.True(t, b.heatingWarmSword)
+		must.EqOp(t, BlacksmithHeatingWarmSword, b.state)
 		must.EqOp(t, 5, b.strikeCount)
 		must.EqOp(t, 6, b.heatCount)
-		must.False(t, b.swordCooledDown)
 		must.True(t, npc.HasEquipment(warm))
 		r.UpdateFor(4 * time.Second)
 
 		// Sword is getting hot again
-		must.False(t, b.heatingWarmSword)
-		must.True(t, b.heatingHotSword)
+		must.EqOp(t, BlacksmithHeatingHotSword, b.state)
 		must.EqOp(t, 11, b.heatCount)
 		must.True(t, npc.HasEquipment(hot))
 		r.UpdateFor(4 * time.Second)
 
 		// Continue forging
-		must.False(t, b.heatingHotSword)
-		must.True(t, b.forging)
+		must.EqOp(t, BlacksmithForging, b.state)
 		must.EqOp(t, 0, b.heatCount)
 		must.EqOp(t, 6, b.strikeCount)
-		must.False(t, b.swordCooledDown)
 		must.True(t, npc.HasEquipment(hm))
 		r.UpdateFor(4 * time.Second)
 
 		// Starts quenching (walk to water barrel)
 		const walkFrames = 11
 		if hasWater {
-			must.False(t, b.forging)
-			must.True(t, b.quenching)
+			must.EqOp(t, BlacksmithQuenchLookForWater, b.state)
 			must.EqOp(t, 0, b.heatCount)
 			must.EqOp(t, 0, b.strikeCount)
-			must.False(t, b.swordCooledDown)
 			must.True(t, npc.HasEquipment(warm))
 			r.UpdateN(walkFrames - 1)
-			must.True(t, b.quenching)
+			must.EqOp(t, BlacksmithQuenchLookForWater, b.state)
 			r.Update()
 			// Reached the barrel
-			must.False(t, b.quenching)
+			must.EqOp(t, BlacksmithQuenching, b.state)
 			must.False(t, npc.HasEquipment(warm))
 			r.UpdateFor(2 * time.Second)
 		}
 
 		// Ending the sequence
-		must.False(t, b.quenching)
-		must.True(t, b.idle)
+		must.EqOp(t, BlacksmithIdle, b.state)
 		if hasWater {
 			must.True(t, npc.HasEquipment(cold))
 		}
 		r.UpdateFor(60 * time.Second)
 
 		// Start again
-		must.False(t, b.idle)
-		must.True(t, b.heatingColdSword)
+		must.EqOp(t, BlacksmithHeatingColdSword, b.state)
 		must.EqOp(t, 1, b.heatCount)
 		must.True(t, npc.HasEquipment(cold))
 	}
