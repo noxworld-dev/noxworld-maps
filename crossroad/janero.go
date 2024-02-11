@@ -33,12 +33,14 @@ func janero_MayorTheogrinNeedsHelp() {
 	switch data.Character.Class {
 	case player.Warrior:
 		switch data.Quest.General.MayorTheogrinNeedsHelp {
-		case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		case QuestInactive, QuestComplete:
+		default:
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1Intro") // Greetings! You must be the great Warrior Horrendous dispatched to aid our beloved Village of Ix! Mayor Theogrin is expecting you.
 		}
 	case player.Wizard, player.Conjurer:
 		switch data.Quest.General.MayorTheogrinNeedsHelp {
-		case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+		case QuestInactive, QuestComplete:
+		default:
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard1End") // The gates are unlocked so you may enter the Village. Delay no longer! The Mayor needs your help!
 		}
 	}
@@ -47,7 +49,8 @@ func janero_MayorTheogrinNeedsHelp() {
 func janero_TroubleAtTheManaMines() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.TroubleAtTheManaMines {
-	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+	case QuestInactive, QuestComplete:
+	default:
 		ns.TellStory(audio.ArcherHurt, "Con03A.scr:IxGuard1") // The Mana Mines are to the west of the Crossroads. Just follow this path south to the Crossroads and then head west.
 	}
 }

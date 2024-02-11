@@ -39,8 +39,8 @@ func templateDialogueStart() {
 func template_FollowUpQuestDialogue() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.FollowUpQuestDialogue {
-	case 0: // Keep empthy: 0 = inactive/not accepted/not completed, 10 = completed
-	case 1:
+	case QuestInactive: // Keep empty
+	case QuestAccepted:
 		ns.PrintStr("You have gained a new Quest.")
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		ns.TellStory(audio.HumanMaleEatFood, "FILL IN BLANKS") //
@@ -66,5 +66,4 @@ func templateDialogueEnd() {
 
 func resetTemplateDialogue() {
 	ns.SetDialog(template, ns.DialogNormal, templateDialogueStart, templateDialogueEnd)
-	return
 }

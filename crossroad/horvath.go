@@ -41,16 +41,16 @@ func horvathDialogueStart() {
 func horvath_FindApprentice() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.Wizard.TravelToTheApprenticeHouse {
-	case 0:
-	case 1:
+	case QuestInactive:
+	case QuestAccepted:
 		ns.PrintStr("You have gained a new Quest.")
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		ns.SetDialog(horvath, ns.DialogNext, horvath_FindApprentice, horvath_FindApprentice)
 		ns.TellStory(audio.HumanMaleEatFood, "Wiz01A.scr:HorvathTalk01") //	Thieving little creatures! The Urchins just moved into our area and have already made absolute pests of themselves! I am Arch-Wizard Horvath. I am looking for my apprentice. I fear he has been lost in a nearby Urchin Den.If you could find him and bring him back to me, I would be willing to bring you along with us to Galava. Come, I will show you the way to the wretched Urchin Den outside my apprentice's home.
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.Wizard.BecomeTheWizardApprentice = 10
+			data.Quest.Wizard.BecomeTheWizardApprentice = QuestComplete
 			data.Quest.Wizard.TravelToTheApprenticeHouse = 2
-			data.Quest.Wizard.FindApprentice = 1
+			data.Quest.Wizard.FindApprentice = QuestAccepted
 		})
 	case 2:
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
@@ -71,13 +71,13 @@ func horvath_FindApprentice() {
 func horvath_TellHorvathYouFoundTheApprentice() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.Wizard.TellHorvathYouFoundTheApprentice {
-	case 0:
-	case 1:
+	case QuestInactive:
+	case QuestAccepted:
 		ns.PrintStr("You have gained a new Quest.")
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		ns.TellStory(audio.HumanMaleEatFood, "Wiz01A.scr:HorvathTalk04") //	My apprentice's robe! Dark fortunes must have befallen him.
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.Wizard.GoToHorvathHisOffice = 1
+			data.Quest.Wizard.GoToHorvathHisOffice = QuestAccepted
 			data.Quest.Wizard.TellHorvathYouFoundTheApprentice = 2
 		})
 	case 2:

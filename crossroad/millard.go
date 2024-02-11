@@ -27,9 +27,9 @@ func millard_TroubleAtTheManaMines() {
 	millard.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.TroubleAtTheManaMines {
-	case 0:
+	case QuestInactive:
 		ns.TellStory(audio.SwordsmanHurt, "War03a:MineGuard") // Sorry, the Mana Mines are closed.
-	case 1:
+	case QuestAccepted:
 		ns.PrintStr("You have gained a new Quest.")
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		ns.SetDialog(millard, ns.DialogNext, millard_TroubleAtTheManaMines, millard_TroubleAtTheManaMines)

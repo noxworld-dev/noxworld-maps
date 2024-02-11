@@ -35,7 +35,7 @@ func testDialogueEnd() {
 		ns.PrintStr("You have gained a new Quest.")
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.General.TroubleAtTheManaMines = 1
+			data.Quest.General.TroubleAtTheManaMines = QuestAccepted
 		})
 	case ns.AnswerNo:
 		// No

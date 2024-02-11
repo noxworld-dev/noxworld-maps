@@ -63,7 +63,8 @@ func kirikDialogueStart() {
 func kirik_TroubleAtTheManaMines() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.TroubleAtTheManaMines {
-	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+	case QuestInactive, QuestComplete:
+	default:
 		switch data.Character.Class {
 		case player.Conjurer:
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard2") // Halt, Conjurer! You're supposed to go to the mines. The Mana shipment will be delayed if you don't get up there.

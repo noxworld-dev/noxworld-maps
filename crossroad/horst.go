@@ -40,8 +40,8 @@ func horstDialogueStart() {
 func horst_MayorTheogrinNeedsHelp() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.FollowUpQuestDialogue {
-	case 0: // Keep empthy: 0 = inactive/not accepted/not completed, 10 = completed
-	case 1:
+	case QuestInactive: // Keep empty
+	case QuestAccepted:
 		switch data.Character.Class {
 		case player.Warrior:
 			ns.TellStory(audio.ArcherHurt, "War03a:IxGuard2Intro") //	Good day, Warrior! Welcome to the Village of Ix! The Mayor is expecting you.
@@ -71,8 +71,8 @@ func horst_MayorTheogrinNeedsHelp() {
 func horst_TroubleAtTheManaMines() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.TroubleAtTheManaMines {
-	case 0:
-	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+	case QuestInactive, QuestComplete:
+	default:
 		ns.TellStory(audio.HumanMaleEatApple, "Con03A.scr:IxGuard2") // Good luck in the mines, boy. Watch out for bandits on the way!
 		// Always close dialogue with end and reset if used non normal dialogue.
 	}

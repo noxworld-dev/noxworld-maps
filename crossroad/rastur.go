@@ -35,7 +35,8 @@ func rasturDialogueStart() {
 func rastur_TroubleAtTheManaMines() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.TroubleAtTheManaMines {
-	case 1, 2, 3, 4, 5, 6, 7, 8, 9:
+	case QuestInactive, QuestComplete:
+	default:
 		switch data.Character.Class {
 		case player.Wizard, player.Conjurer:
 			ns.TellStory(audio.FireKnight1Hurt, "Con03A.scr:GalavaGuard1") // The Mana Mines are to the west of the Crossroads. Just return along the main path.

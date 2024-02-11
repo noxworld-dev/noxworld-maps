@@ -68,13 +68,13 @@ func captainDialogueStart() {
 func captain_BecomeTheWizardApprentice() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.Wizard.BecomeTheWizardApprentice {
-	case 0:
+	case QuestInactive:
 		ns.PrintStr("You have gained a new Quest.")
 		ns.TellStory(audio.HumanMaleEatFood, "Wiz01A.scr:JandorTalk01") // Hard, cold facts, lad. You must become a wizard's apprentice before you can gain entry to the Tower of Illusion. The one controlling that is the Arch-Wizard Horvath, an old friend of mine.I know Horvath is in need of a worthy apprentice. But are you worthy, lad? heh, heh, heh...Follow the beach road. Find the home of his new apprentice. And beware of urchins. They can be the most nettlesome of pests, at best. I guarantee, you don't want to learn their worst, lad.
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.Wizard.BecomeTheWizardApprentice = 1
-			data.Quest.Wizard.TravelToTheApprenticeHouse = 1
+			data.Quest.Wizard.BecomeTheWizardApprentice = QuestAccepted
+			data.Quest.Wizard.TravelToTheApprenticeHouse = QuestAccepted
 		})
 	case 1:
 		ns.TellStory(audio.HumanMaleEatFood, "Wiz01A.scr:JandorTalk02") // This is as far as I take you, lad. Find Horvath's apprentice at his house -- just north of the beach. He'll guide you to Galava from there.
@@ -92,14 +92,14 @@ func captain_JoinTheFireKnights() {
 	captain.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.Warrior.JoinTheFireKnights {
-	case 0:
+	case QuestInactive:
 		ns.PrintStr("You have gained a new Quest.")
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.Warrior.JoinTheFireKnights = 1
+			data.Quest.Warrior.JoinTheFireKnights = QuestAccepted
 			ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 			ns.TellStory(audio.HumanMaleEatFood, "War01A.scr:CaptainTalkStart") // Gain entry to Dün Mir, find the Academy and then be ready for the test of your life -- The Gauntlet. It weeds out the weak recruits.
 		})
-	case 1:
+	case QuestAccepted:
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
 			data.Quest.Warrior.JoinTheFireKnights = 2
 			ns.TellStory(audio.HumanMaleEatFood, "War01a:CaptainTalk2bStart") // This sword is the best blade I can offer you. Wear it with pride, lad!
@@ -118,14 +118,14 @@ func captain_BecomeTheConjurerApprentice() {
 	captain.LookAtObject(ns.GetCaller())
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.Conjurer.BecomeTheConjurerApprentice {
-	case 0:
+	case QuestInactive:
 		ns.PrintStr("You have gained a new Quest.")
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
 			data.Quest.Conjurer.BecomeTheConjurerApprentice = 2
 			ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 			ns.TellStory(audio.HumanMaleEatApple, "Con01a:CaptainGreet") // I'll bring you no further, lad. Too many prying eyes the closer we get by air to the Village of Ix.Follow the tunnel which leads to Ix.Find my old friend Aldwyn. He'll help you if he can.Take this staff. Forest beasts will heed its bite should they threaten. Careful as you go, lad.
 		})
-	case 1:
+	case QuestAccepted:
 	case 2:
 		ns.PrintStr("Find Aldwyn and ask for his help to become an apprentice.")
 		captainDialogueHurryQuest()
@@ -136,8 +136,8 @@ func captain_BecomeTheConjurerApprentice() {
 func captain_TroubleAtTheManaMines() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.TroubleAtTheManaMines {
-	case 0:
-	case 1:
+	case QuestInactive:
+	case QuestAccepted:
 	case 2:
 	case 3:
 	}
@@ -146,13 +146,13 @@ func captain_TroubleAtTheManaMines() {
 func captain_ExploreTheTombsOfValor() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.General.ExploreTheTombsOfValor {
-	case 0:
-	case 1:
+	case QuestInactive:
+	case QuestAccepted:
 		ns.PrintStr("You have gained a new Quest.")
 		// warrior: ns.TellStory(audio.HumanMaleEatFood, "War03b:AirshipCaptainIxSpeech") // What, ho! You've returned, lad, or should I say Warrior! Heh, heh, heh...
 		// con: ns.TellStory(audio.HumanMaleEatFood, "Con03A.scr:JandorA") // Good work with the miners, lad! With the Mana supply reestablished, the wizards of Galava will be busy tonight. But if I know Hecubah, I fear rumors of her practicing the forbidden Black Arts may be true. And it is up to us to journey to the Field of Valor -- where you must find out for sure if she is communing with the Undead through her ancestors' occult art of necromancy.
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.General.ExploreTheTombsOfValor = 1
+			data.Quest.General.ExploreTheTombsOfValor = QuestAccepted
 			ns.TellStory(audio.HumanMaleEatApple, "Wiz03a:AirshipCaptainSendoff") // Ah, you're back! Horvath spoke well of your progress! Well done! Didn't think you had it in you! heh, heh, heh. But quickly now, we are off to the Field of Valor where the tombs of ancient warriors lie!
 		})
 	case 2:

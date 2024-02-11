@@ -40,15 +40,15 @@ func horvathApprenticeDialogueStart() {
 func horvathApprentice_FindApprentice() {
 	data := loadMyQuestData(ns.GetCaller().Player())
 	switch data.Quest.Wizard.FindApprentice {
-	case 0:
-	case 1:
+	case QuestInactive:
+	case QuestAccepted:
 		ns.PrintStr("You have gained a new Quest.")
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		ns.TellStory(audio.HumanMaleEatFood, "Wiz01:ApprenticeTalk01") // Thank you for trying to rescue me, but I am already too far gone. The urchins... they weren't acting alone! It was a nec... nec... necromancer...
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			data.Quest.Wizard.FindApprentice = 10
-			data.Quest.Wizard.TellHorvathYouFoundTheApprentice = 1
-			data.Quest.Wizard.TravelToTheApprenticeHouse = 10
+			data.Quest.Wizard.FindApprentice = QuestComplete
+			data.Quest.Wizard.TellHorvathYouFoundTheApprentice = QuestAccepted
+			data.Quest.Wizard.TravelToTheApprenticeHouse = QuestComplete
 		})
 	}
 }

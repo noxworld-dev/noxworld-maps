@@ -7,6 +7,14 @@ import (
 	"github.com/noxworld-dev/opennox-lib/player"
 )
 
+type QuestStatus int
+
+const (
+	QuestInactive = QuestStatus(0)
+	QuestAccepted = QuestStatus(1)
+	QuestComplete = QuestStatus(10)
+)
+
 type MyAccountData struct {
 	Character struct {
 		// General
@@ -26,14 +34,14 @@ type MyAccountData struct {
 		// 3 == quest completed
 		General struct {
 			// Osborn
-			LostSpectacles int
+			LostSpectacles QuestStatus
 			// Mana Mines
-			TroubleAtTheManaMines int
+			TroubleAtTheManaMines QuestStatus
 			// Tomb of Valor
-			ExploreTheTombsOfValor int
+			ExploreTheTombsOfValor QuestStatus
 			// Ix
 			// Mayor Theogrin
-			MayorTheogrinNeedsHelp int
+			MayorTheogrinNeedsHelp QuestStatus
 
 			// Dun Mir
 			// Gearheart
@@ -49,23 +57,23 @@ type MyAccountData struct {
 			//Upgrade                              bool
 			//UpgradeCompleted                     bool
 			// Example for template
-			FollowUpQuestDialogue int
+			FollowUpQuestDialogue QuestStatus
 		}
 		Warrior struct {
 			// Warrior questline
-			JoinTheFireKnights int
+			JoinTheFireKnights QuestStatus
 		}
 		Conjurer struct {
 			// Conjurer questline
-			BecomeTheConjurerApprentice int
+			BecomeTheConjurerApprentice QuestStatus
 		}
 		Wizard struct {
 			// Wizard questline
-			BecomeTheWizardApprentice        int
-			TravelToTheApprenticeHouse       int
-			FindApprentice                   int
-			TellHorvathYouFoundTheApprentice int
-			GoToHorvathHisOffice             int
+			BecomeTheWizardApprentice        QuestStatus
+			TravelToTheApprenticeHouse       QuestStatus
+			FindApprentice                   QuestStatus
+			TellHorvathYouFoundTheApprentice QuestStatus
+			GoToHorvathHisOffice             QuestStatus
 		}
 	}
 }
