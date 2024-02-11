@@ -6,21 +6,36 @@ import (
 	"github.com/noxworld-dev/noxscript/ns/v4/effect"
 )
 
-// Blacksmith variables.
-var blacksmith ns.Obj
-var blacksmithSpawn ns.Pointf
-var blacksmithStrikeCount int
-var blacksmithHeatCount int
-var quenchingWaterSpawn ns.Pointf
+// Start blacksmith script.
+func init() {
+	OnLateInit(func() {
+		NewBlacksmith("Blacksmith")
+	})
+}
 
-// Animations.
-var heatingColdSword bool
-var heatingWarmSword bool
-var heatingHotSword bool
-var swordCooledDown bool
-var forging bool
-var quenching bool
-var idle bool
+// Blacksmith variables.
+type Blacksmith struct {
+	blacksmith          ns.Obj
+	brazier             ns.Obj
+	anvil               ns.Obj
+	sword               ns.Obj
+	swordWarm           ns.Obj
+	swordHot            ns.Obj
+	hammer              ns.Obj
+	spawn               ns.Pointf
+	strikeCount         int
+	heatCount           int
+	quenchingWaterSpawn ns.Pointf
+
+	// Animations.
+	heatingColdSword bool
+	heatingWarmSword bool
+	heatingHotSword  bool
+	swordCooledDown  bool
+	forging          bool
+	quenching        bool
+	idle             bool
+}
 
 // Ideas:
 // Add conditionals to implement script without the need of map editing
@@ -34,191 +49,197 @@ var idle bool
 // - bring item to merchant
 // - idle and reset
 
-// Start blacksmith script.
-func init() {
-	OnLateInit(func() {
-		blacksmith = ns.Object("Blacksmith")
-		blacksmithSpawn = blacksmith.Pos()
-		brazier := ns.FindClosestObject(blacksmith, ns.HasTypeName{"Brazier"})
-		brazier.Freeze(true)
-		water := ns.FindClosestObject(blacksmith, ns.HasTypeName{"WaterBarrel"})
-		quenchingWaterSpawn = water.Pos()
-		// Animation
-		heatingColdSword = true
-		heatUpColdWeapon()
-	})
-}
-
-func heatUpColdWeapon() {
-	if heatingColdSword {
-		brazier := ns.Object("Brazier")
-		if blacksmith.Pos().Sub(blacksmithSpawn).Len() > 10 {
-			blacksmith.Guard(blacksmithSpawn, blacksmithSpawn, 300)
-			ns.NewTimer(ns.Seconds(1), func() {
-				heatUpColdWeapon()
-			})
-		} else {
-			blacksmith.Equip(ns.Object("BlacksmithSword"))
-			blacksmith.LookAtObject(brazier)
-			blacksmith.Pause(ns.Seconds(1))
-			blacksmithHeatCount = blacksmithHeatCount + 1
-			if blacksmithHeatCount >= 5 {
-				heatingColdSword = false
-				heatingWarmSword = true
-				heatUpWarmWeapon()
-			}
-			ns.NewTimer(ns.Seconds(1), func() {
-				heatUpColdWeapon()
-			})
-		}
+func NewBlacksmith(name string) *Blacksmith {
+	b := &Blacksmith{
+		blacksmith: ns.Object(name),
 	}
+	b.spawn = b.blacksmith.Pos()
+	b.brazier = ns.FindClosestObject(b.blacksmith, ns.HasTypeName{"Brazier"})
+	b.brazier.Freeze(true)
+	b.anvil = ns.Object("Anvil")
+	b.sword = ns.Object("BlacksmithSword")
+	b.swordWarm = ns.Object("BlacksmithWarmSword")
+	b.swordHot = ns.Object("BlacksmithHotSword")
+	b.hammer = ns.Object("BlacksmithHammer")
+	water := ns.FindClosestObject(b.blacksmith, ns.HasTypeName{"WaterBarrel"})
+	b.quenchingWaterSpawn = water.Pos()
+	// Animation
+	b.heatingColdSword = true
+	b.heatUpColdWeapon()
+	return b
 }
 
-func heatUpWarmWeapon() {
-	if heatingWarmSword {
-		brazier := ns.Object("Brazier")
-		if blacksmith.Pos().Sub(blacksmithSpawn).Len() > 10 {
-			blacksmith.Guard(blacksmithSpawn, blacksmithSpawn, 300)
-			ns.NewTimer(ns.Seconds(1), func() {
-				heatUpWarmWeapon()
-			})
-		} else {
-			blacksmith.Equip(ns.Object("BlacksmithWarmSword"))
-			blacksmith.LookAtObject(brazier)
-			blacksmith.Pause(ns.Seconds(1))
-			blacksmithHeatCount = blacksmithHeatCount + 1
-			if blacksmithHeatCount >= 10 {
-				heatingWarmSword = false
-				heatingHotSword = true
-				heatUpHotWeapon()
-			}
-			ns.NewTimer(ns.Seconds(1), func() {
-				heatUpWarmWeapon()
-			})
-		}
+func (b *Blacksmith) heatUpColdWeapon() {
+	if !b.heatingColdSword {
+		return
 	}
-}
-
-func heatUpHotWeapon() {
-	if heatingHotSword {
-		brazier := ns.Object("Brazier")
-		if blacksmith.Pos().Sub(blacksmithSpawn).Len() > 10 {
-			blacksmith.Guard(blacksmithSpawn, blacksmithSpawn, 300)
-			ns.NewTimer(ns.Seconds(1), func() {
-				heatUpHotWeapon()
-			})
-		} else {
-			blacksmith.Equip(ns.Object("BlacksmithHotSword"))
-			blacksmith.LookAtObject(brazier)
-			blacksmith.Pause(ns.Seconds(1))
-			blacksmithHeatCount = blacksmithHeatCount + 1
-			if blacksmithHeatCount >= 15 {
-				heatingHotSword = false
-				forging = true
-				blacksmithHeatCount = 0
-				hitAnvil()
-			}
-			ns.NewTimer(ns.Seconds(1), func() {
-				heatUpHotWeapon()
-			})
+	if b.blacksmith.Pos().Sub(b.spawn).Len() > 10 {
+		b.blacksmith.Guard(b.spawn, b.spawn, 300)
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.heatUpColdWeapon()
+		})
+	} else {
+		b.blacksmith.Equip(b.sword)
+		b.blacksmith.LookAtObject(b.brazier)
+		b.blacksmith.Pause(ns.Seconds(1))
+		b.heatCount++
+		if b.heatCount >= 5 {
+			b.heatingColdSword = false
+			b.heatingWarmSword = true
+			b.heatUpWarmWeapon()
 		}
-	}
-}
-
-func hitAnvil() {
-	if forging {
-		anvil := ns.Object("Anvil")
-		blacksmith.Equip(ns.Object("BlacksmithHammer"))
-		if blacksmith.Pos().Sub(blacksmithSpawn).Len() > 10 {
-			blacksmith.Guard(blacksmithSpawn, blacksmithSpawn, 300)
-			ns.NewTimer(ns.Seconds(1), func() {
-				hitAnvil()
-			})
-		} else {
-			blacksmith.LookAtObject(anvil)
-			blacksmith.HitMelee(blacksmith.Pos())
-			blacksmithStrikeCount = blacksmithStrikeCount + 1
-			if blacksmithStrikeCount <= 9 {
-				ns.NewTimer(ns.Frames(7), func() {
-					ns.Effect(effect.DAMAGE_POOF, anvil.Pos(), anvil.Pos())
-				})
-			} else {
-				blacksmithStrikeCount = 0
-				forging = false
-				quenching = true
-				quenchWeapon()
-			}
-			ns.NewTimer(ns.Seconds(1), func() {
-				if blacksmithStrikeCount == 5 {
-					swordCooledDown = true
-					forging = false
-					blacksmithHeatCount = 5
-					heatingWarmSword = true
-					heatUpWarmWeapon()
-				}
-				if !swordCooledDown {
-					hitAnvil()
-				}
-				swordCooledDown = false
-			})
-		}
-	}
-}
-
-func quenchWeapon() {
-	if quenching {
-		blacksmith.Equip(ns.Object("BlacksmithWarmSword"))
-		water := ns.FindClosestObject(blacksmith, ns.HasTypeName{"WaterBarrel"}, ns.InCirclef{Center: blacksmith, R: 200})
-		if water == nil {
-			// Call next --> sell to vendor.
-			switch ns.Random(1, 5) {
-			case 1:
-				ns.AudioEvent(audio.TauntShakeFist, blacksmith)
-				blacksmith.ChatStr("Where's my quenching water?")
-			case 2:
-				ns.CreateObject("WaterBarrel", quenchingWaterSpawn)
-			}
-			quenching = false
-			idle = true
-			resetAnimation()
-		} else {
-			water.Freeze(true)
-			blacksmith.WalkTo(water.Pos())
-			blacksmith.OnEvent(ns.EventCollision, func() {
-				if ns.GetCaller() == water {
-					if quenching {
-						quenching = false
-						ns.Effect(effect.SMOKE_BLAST, water.Pos().Add(ns.Pointf{X: 0, Y: -50}), water.Pos())
-						blacksmith.Unequip(ns.Object("BlacksmithWarmSword"))
-						blacksmith.Pause(ns.Seconds(2))
-						ns.AudioEvent(audio.RunOnWater, water)
-						ns.NewTimer(ns.Seconds(2), func() {
-							ns.AudioEvent(audio.MetalWeaponPickup, blacksmith)
-							blacksmith.Equip(ns.Object("BlacksmithSword"))
-							blacksmith.Guard(blacksmithSpawn, blacksmithSpawn, 300)
-							// Call next --> sell to vendor.
-							water.Freeze(false)
-							idle = true
-							resetAnimation()
-						})
-					}
-				}
-			})
-		}
-	}
-}
-
-func resetAnimation() {
-	if idle {
-		blacksmith.Guard(blacksmithSpawn, blacksmithSpawn, 300)
-		ns.NewTimer(ns.Seconds(60), func() {
-			idle = false
-			heatingColdSword = true
-			blacksmithHeatCount = 0
-			heatUpColdWeapon()
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.heatUpColdWeapon()
 		})
 	}
 }
 
-//func sellEquipment() {
-//}
+func (b *Blacksmith) heatUpWarmWeapon() {
+	if !b.heatingWarmSword {
+		return
+	}
+	if b.blacksmith.Pos().Sub(b.spawn).Len() > 10 {
+		b.blacksmith.Guard(b.spawn, b.spawn, 300)
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.heatUpWarmWeapon()
+		})
+	} else {
+		b.blacksmith.Equip(b.swordWarm)
+		b.blacksmith.LookAtObject(b.brazier)
+		b.blacksmith.Pause(ns.Seconds(1))
+		b.heatCount++
+		if b.heatCount >= 10 {
+			b.heatingWarmSword = false
+			b.heatingHotSword = true
+			b.heatUpHotWeapon()
+		}
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.heatUpWarmWeapon()
+		})
+	}
+}
+
+func (b *Blacksmith) heatUpHotWeapon() {
+	if !b.heatingHotSword {
+		return
+	}
+	if b.blacksmith.Pos().Sub(b.spawn).Len() > 10 {
+		b.blacksmith.Guard(b.spawn, b.spawn, 300)
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.heatUpHotWeapon()
+		})
+	} else {
+		b.blacksmith.Equip(b.swordHot)
+		b.blacksmith.LookAtObject(b.brazier)
+		b.blacksmith.Pause(ns.Seconds(1))
+		b.heatCount++
+		if b.heatCount >= 15 {
+			b.heatingHotSword = false
+			b.forging = true
+			b.heatCount = 0
+			b.hitAnvil()
+		}
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.heatUpHotWeapon()
+		})
+	}
+}
+
+func (b *Blacksmith) hitAnvil() {
+	if !b.forging {
+		return
+	}
+	b.blacksmith.Equip(b.hammer)
+	if b.blacksmith.Pos().Sub(b.spawn).Len() > 10 {
+		b.blacksmith.Guard(b.spawn, b.spawn, 300)
+		ns.NewTimer(ns.Seconds(1), func() {
+			b.hitAnvil()
+		})
+	} else {
+		b.blacksmith.LookAtObject(b.anvil)
+		b.blacksmith.HitMelee(b.blacksmith.Pos())
+		b.strikeCount = b.strikeCount + 1
+		if b.strikeCount <= 9 {
+			ns.NewTimer(ns.Frames(7), func() {
+				ns.Effect(effect.DAMAGE_POOF, b.anvil.Pos(), b.anvil.Pos())
+			})
+		} else {
+			b.strikeCount = 0
+			b.forging = false
+			b.quenching = true
+			b.quenchWeapon()
+		}
+		ns.NewTimer(ns.Seconds(1), func() {
+			if b.strikeCount == 5 {
+				b.swordCooledDown = true
+				b.forging = false
+				b.heatCount = 5
+				b.heatingWarmSword = true
+				b.heatUpWarmWeapon()
+			}
+			if !b.swordCooledDown {
+				b.hitAnvil()
+			}
+			b.swordCooledDown = false
+		})
+	}
+}
+
+func (b *Blacksmith) quenchWeapon() {
+	if !b.quenching {
+		return
+	}
+	b.blacksmith.Equip(b.swordWarm)
+	water := ns.FindClosestObject(b.blacksmith, ns.HasTypeName{"WaterBarrel"}, ns.InCirclef{Center: b.blacksmith, R: 200})
+	if water == nil {
+		// Call next --> sell to vendor.
+		switch ns.Random(1, 5) {
+		case 1:
+			ns.AudioEvent(audio.TauntShakeFist, b.blacksmith)
+			b.blacksmith.ChatStr("Where's my quenching water?")
+		case 2:
+			ns.CreateObject("WaterBarrel", b.quenchingWaterSpawn)
+		}
+		b.quenching = false
+		b.idle = true
+		b.resetAnimation()
+	} else {
+		water.Freeze(true)
+		b.blacksmith.WalkTo(water.Pos())
+		b.blacksmith.OnEvent(ns.EventCollision, func() {
+			if ns.GetCaller() != water {
+				return
+			}
+			if !b.quenching {
+				return
+			}
+			b.quenching = false
+			ns.Effect(effect.SMOKE_BLAST, water.Pos().Add(ns.Pointf{X: 0, Y: -50}), water.Pos())
+			b.blacksmith.Unequip(b.swordWarm)
+			b.blacksmith.Pause(ns.Seconds(2))
+			ns.AudioEvent(audio.RunOnWater, water)
+			ns.NewTimer(ns.Seconds(2), func() {
+				ns.AudioEvent(audio.MetalWeaponPickup, b.blacksmith)
+				b.blacksmith.Equip(b.sword)
+				b.blacksmith.Guard(b.spawn, b.spawn, 300)
+				// Call next --> sell to vendor.
+				water.Freeze(false)
+				b.idle = true
+				b.resetAnimation()
+			})
+		})
+	}
+}
+
+func (b *Blacksmith) resetAnimation() {
+	if !b.idle {
+		return
+	}
+	b.blacksmith.Guard(b.spawn, b.spawn, 300)
+	ns.NewTimer(ns.Seconds(60), func() {
+		b.idle = false
+		b.heatingColdSword = true
+		b.heatCount = 0
+		b.heatUpColdWeapon()
+	})
+}
