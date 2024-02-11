@@ -8,15 +8,17 @@ import (
 var test ns.Obj
 var testSpawn ns.Pointf
 
-func initTest() {
-	if ns.Object("Test") != nil {
-		test = ns.Object("Test")
-	} else {
-		// Fix spawn
-		test = ns.CreateObject("NPC", ns.GetHost())
-	}
-	testSpawn = test.Pos()
-	ns.SetDialog(test, ns.DialogYesNo, testDialogueStart, testDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Test") != nil {
+			test = ns.Object("Test")
+		} else {
+			// Fix spawn
+			test = ns.CreateObject("NPC", ns.GetHost())
+		}
+		testSpawn = test.Pos()
+		ns.SetDialog(test, ns.DialogYesNo, testDialogueStart, testDialogueEnd)
+	})
 }
 
 func testDialogueStart() {

@@ -9,16 +9,18 @@ import (
 var janero ns.Obj
 var janeroSpawn ns.Pointf
 
-func initJanero() {
-	if ns.Object("Janero") != nil {
-		janero = ns.Object("Janero")
-	} else {
-		// Fix spawn
-		janero = ns.CreateObject("NPC", ns.GetHost())
-	}
-	janeroSpawn = janero.Pos()
-	ns.StoryPic(janero, "IxGuard1Pic")
-	ns.SetDialog(janero, ns.DialogNormal, janeroDialogueStart, janeroDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Janero") != nil {
+			janero = ns.Object("Janero")
+		} else {
+			// Fix spawn
+			janero = ns.CreateObject("NPC", ns.GetHost())
+		}
+		janeroSpawn = janero.Pos()
+		ns.StoryPic(janero, "IxGuard1Pic")
+		ns.SetDialog(janero, ns.DialogNormal, janeroDialogueStart, janeroDialogueEnd)
+	})
 }
 
 func janeroDialogueStart() {

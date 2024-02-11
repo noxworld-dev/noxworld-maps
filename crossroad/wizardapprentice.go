@@ -9,16 +9,18 @@ import (
 var horvathApprentice ns.Obj
 var horvathApprenticeSpawn ns.Pointf
 
-func initWizardApprentice() {
-	if ns.Object("HorvathApprentice") != nil {
-		horvathApprentice = ns.Object("HorvathApprentice")
-	} else {
-		// Fix spawn
-		horvathApprentice = ns.CreateObject("NPC", ns.GetHost())
-	}
-	horvathApprenticeSpawn = horvathApprentice.Pos()
-	ns.StoryPic(horvathApprentice, "WoundedApprenticePic")
-	ns.SetDialog(horvathApprentice, ns.DialogNormal, horvathApprenticeDialogueStart, horvathApprenticeDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("HorvathApprentice") != nil {
+			horvathApprentice = ns.Object("HorvathApprentice")
+		} else {
+			// Fix spawn
+			horvathApprentice = ns.CreateObject("NPC", ns.GetHost())
+		}
+		horvathApprenticeSpawn = horvathApprentice.Pos()
+		ns.StoryPic(horvathApprentice, "WoundedApprenticePic")
+		ns.SetDialog(horvathApprentice, ns.DialogNormal, horvathApprenticeDialogueStart, horvathApprenticeDialogueEnd)
+	})
 }
 
 func horvathApprenticeDialogueStart() {

@@ -9,16 +9,18 @@ import (
 var horvath ns.Obj
 var horvathSpawn ns.Pointf
 
-func initHorvath() {
-	if ns.Object("Horvath") != nil {
-		horvath = ns.Object("Horvath")
-	} else {
-		// Fix spawn
-		horvath = ns.CreateObject("NPC", ns.GetHost())
-	}
-	horvathSpawn = horvath.Pos()
-	ns.StoryPic(horvath, "HorvathPic")
-	ns.SetDialog(horvath, ns.DialogNormal, horvathDialogueStart, horvathDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Horvath") != nil {
+			horvath = ns.Object("Horvath")
+		} else {
+			// Fix spawn
+			horvath = ns.CreateObject("NPC", ns.GetHost())
+		}
+		horvathSpawn = horvath.Pos()
+		ns.StoryPic(horvath, "HorvathPic")
+		ns.SetDialog(horvath, ns.DialogNormal, horvathDialogueStart, horvathDialogueEnd)
+	})
 }
 
 func horvathDialogueStart() {

@@ -9,16 +9,18 @@ import (
 var rastur ns.Obj
 var rasturSpawn ns.Pointf
 
-func initRastur() {
-	if ns.Object("Rastur") != nil {
-		rastur = ns.Object("Rastur")
-	} else {
-		// Fix spawn
-		rastur = ns.CreateObject("NPC", ns.GetHost())
-	}
-	rasturSpawn = rastur.Pos()
-	ns.StoryPic(rastur, "WizardGuard1Pic")
-	ns.SetDialog(rastur, ns.DialogNormal, rasturDialogueStart, rasturDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Rastur") != nil {
+			rastur = ns.Object("Rastur")
+		} else {
+			// Fix spawn
+			rastur = ns.CreateObject("NPC", ns.GetHost())
+		}
+		rasturSpawn = rastur.Pos()
+		ns.StoryPic(rastur, "WizardGuard1Pic")
+		ns.SetDialog(rastur, ns.DialogNormal, rasturDialogueStart, rasturDialogueEnd)
+	})
 }
 
 func rasturDialogueStart() {

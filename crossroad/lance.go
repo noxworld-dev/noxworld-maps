@@ -9,16 +9,18 @@ import (
 var lance ns.Obj
 var lanceSpawn ns.Pointf
 
-func initLance() {
-	if ns.Object("Lance") != nil {
-		lance = ns.Object("Lance")
-	} else {
-		// Fix spawn
-		lance = ns.CreateObject("NPC", ns.GetHost())
-	}
-	lanceSpawn = lance.Pos()
-	ns.StoryPic(lance, "Warrior2Pic")
-	ns.SetDialog(lance, ns.DialogNormal, lanceDialogueStart, lanceDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Lance") != nil {
+			lance = ns.Object("Lance")
+		} else {
+			// Fix spawn
+			lance = ns.CreateObject("NPC", ns.GetHost())
+		}
+		lanceSpawn = lance.Pos()
+		ns.StoryPic(lance, "Warrior2Pic")
+		ns.SetDialog(lance, ns.DialogNormal, lanceDialogueStart, lanceDialogueEnd)
+	})
 }
 
 func lanceDialogueStart() {

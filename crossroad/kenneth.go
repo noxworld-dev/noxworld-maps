@@ -10,17 +10,19 @@ var kenneth ns.Obj
 var kennethSpawn ns.Pointf
 var lockDoorDunMir bool
 
-func initKenneth() {
-	if ns.Object("Kenneth") != nil {
-		kenneth = ns.Object("Kenneth")
-	} else {
-		// Fix spawn
-		kenneth = ns.CreateObject("NPC", ns.GetHost())
-	}
-	kennethSpawn = kenneth.Pos()
-	ns.StoryPic(kenneth, "Warrior3Pic")
-	ns.SetDialog(kenneth, ns.DialogNormal, kennethDialogueStart, kennethDialogueEnd)
-	kennethManageDoorLock()
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Kenneth") != nil {
+			kenneth = ns.Object("Kenneth")
+		} else {
+			// Fix spawn
+			kenneth = ns.CreateObject("NPC", ns.GetHost())
+		}
+		kennethSpawn = kenneth.Pos()
+		ns.StoryPic(kenneth, "Warrior3Pic")
+		ns.SetDialog(kenneth, ns.DialogNormal, kennethDialogueStart, kennethDialogueEnd)
+		kennethManageDoorLock()
+	})
 }
 
 func kennethManageDoorLock() {

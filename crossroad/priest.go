@@ -9,11 +9,12 @@ import (
 var priest ns.Obj
 var priestSpawn ns.Pointf
 
-// Priest.
-func initPriest() {
-	priest = ns.Object("Priest")
-	ns.StoryPic(priest, "GalavaPriestPic")
-	ns.SetDialog(priest, ns.DialogYesNo, priestDialogueStart, priestDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		priest = ns.Object("Priest")
+		ns.StoryPic(priest, "GalavaPriestPic")
+		ns.SetDialog(priest, ns.DialogYesNo, priestDialogueStart, priestDialogueEnd)
+	})
 }
 
 func priestDialogueStart() {

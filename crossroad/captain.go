@@ -30,16 +30,18 @@ func dialogExampleCaptain() {
 var captain ns.Obj
 var captainSpawn ns.Pointf
 
-func initCaptain() {
-	if ns.Object("Captain") != nil {
-		captain = ns.Object("Captain")
-	} else {
-		// Fix spawn
-		captain = ns.CreateObject("AirshipCaptain", ns.GetHost())
-	}
-	captainSpawn = captain.Pos()
-	ns.StoryPic(captain, "AirshipCaptainPic")
-	ns.SetDialog(captain, ns.DialogNormal, captainDialogueStart, captainDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Captain") != nil {
+			captain = ns.Object("Captain")
+		} else {
+			// Fix spawn
+			captain = ns.CreateObject("AirshipCaptain", ns.GetHost())
+		}
+		captainSpawn = captain.Pos()
+		ns.StoryPic(captain, "AirshipCaptainPic")
+		ns.SetDialog(captain, ns.DialogNormal, captainDialogueStart, captainDialogueEnd)
+	})
 }
 
 func captainDialogueStart() {

@@ -8,16 +8,18 @@ import (
 var osborn ns.Obj
 var osbornSpawn ns.Pointf
 
-func initOsborn() {
-	if ns.Object("Osborn") != nil {
-		osborn = ns.Object("Osborn")
-	} else {
-		// Fix spawn
-		osborn = ns.CreateObject("NPC", ns.GetHost())
-	}
-	osbornSpawn = osborn.Pos()
-	ns.StoryPic(osborn, "OsbornPic")
-	ns.SetDialog(osborn, ns.DialogNormal, osbornDialogueStart, osbornDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Osborn") != nil {
+			osborn = ns.Object("Osborn")
+		} else {
+			// Fix spawn
+			osborn = ns.CreateObject("NPC", ns.GetHost())
+		}
+		osbornSpawn = osborn.Pos()
+		ns.StoryPic(osborn, "OsbornPic")
+		ns.SetDialog(osborn, ns.DialogNormal, osbornDialogueStart, osbornDialogueEnd)
+	})
 }
 
 func osbornDialogueStart() {

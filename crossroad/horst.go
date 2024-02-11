@@ -12,16 +12,18 @@ var horstSpawn ns.Pointf
 func dialogExampleHorst() {
 }
 
-func initHorst() {
-	if ns.Object("Horst") != nil {
-		horst = ns.Object("Horst")
-	} else {
-		// Fix spawn
-		horst = ns.CreateObject("NPC", ns.GetHost())
-	}
-	horstSpawn = horst.Pos()
-	ns.StoryPic(horst, "IxGuard2Pic")
-	ns.SetDialog(horst, ns.DialogNormal, horstDialogueStart, horstDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Horst") != nil {
+			horst = ns.Object("Horst")
+		} else {
+			// Fix spawn
+			horst = ns.CreateObject("NPC", ns.GetHost())
+		}
+		horstSpawn = horst.Pos()
+		ns.StoryPic(horst, "IxGuard2Pic")
+		ns.SetDialog(horst, ns.DialogNormal, horstDialogueStart, horstDialogueEnd)
+	})
 }
 
 func horstDialogueStart() {

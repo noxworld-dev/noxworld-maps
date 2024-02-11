@@ -10,17 +10,19 @@ var kirik ns.Obj
 var kirikSpawn ns.Pointf
 var lockGateGalava bool
 
-func initKirik() {
-	if ns.Object("Kirik") != nil {
-		kirik = ns.Object("Kirik")
-	} else {
-		// Fix spawn
-		kirik = ns.CreateObject("NPC", ns.GetHost())
-	}
-	kirikSpawn = kirik.Pos()
-	ns.StoryPic(kirik, "WizardGuard2Pic")
-	ns.SetDialog(kirik, ns.DialogNormal, kirikDialogueStart, kirikDialogueEnd)
-	kirikManageDoorLock()
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Kirik") != nil {
+			kirik = ns.Object("Kirik")
+		} else {
+			// Fix spawn
+			kirik = ns.CreateObject("NPC", ns.GetHost())
+		}
+		kirikSpawn = kirik.Pos()
+		ns.StoryPic(kirik, "WizardGuard2Pic")
+		ns.SetDialog(kirik, ns.DialogNormal, kirikDialogueStart, kirikDialogueEnd)
+		kirikManageDoorLock()
+	})
 }
 
 func kirikManageDoorLock() {

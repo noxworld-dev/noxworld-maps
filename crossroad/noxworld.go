@@ -20,30 +20,21 @@ var IxEntrance ns.Obj
 var GalavaEntrance ns.Obj
 var DunMirEntrance ns.Obj
 
+var lateInit []func()
+
+func OnLateInit(fnc func()) {
+	lateInit = append(lateInit, fnc)
+}
+
 // Initial server boot function.
 func init() {
 	ns.Music(22, 100)
 	ns.OnChat(onCommand)
 	ns.NewTimer(ns.Frames(5), func() {
-		// Characters.
-		initPriest()
-		initBlacksmith()
-		initCaptain()
-		initOllie()
-		initKenneth()
-		initLance()
-		initBrigadin()
-		initJanero()
-		initHorst()
-		initKirik()
-		initRastur()
-		initMillard()
-		initOsborn()
-		// Not in Crossroads
-		initWizardApprentice()
-		initHorvath()
-		// TEST
-		initTest()
+		for _, fnc := range lateInit {
+			fnc()
+		}
+		lateInit = nil
 	})
 	checkClass(ns.GetHost().Player())
 	ns.PrintStrToAll("Welcome to the NoxWorld server.")

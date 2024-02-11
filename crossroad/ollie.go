@@ -10,17 +10,19 @@ var ollieSpawn ns.Pointf
 
 var followPlayer bool
 
-func initOllie() {
-	if ns.Object("Ollie") != nil {
-		ollie = ns.Object("Ollie")
-	} else {
-		// Fix spawn
-		ollie = ns.CreateObject("Wolf", ns.GetHost())
-		ollie.SetTeam(ns.Teams()[1])
-	}
-	ollieSpawn = ollie.Pos()
-	place()
-	ns.OnChat(commandOllie)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Ollie") != nil {
+			ollie = ns.Object("Ollie")
+		} else {
+			// Fix spawn
+			ollie = ns.CreateObject("Wolf", ns.GetHost())
+			ollie.SetTeam(ns.Teams()[1])
+		}
+		ollieSpawn = ollie.Pos()
+		place()
+		ns.OnChat(commandOllie)
+	})
 }
 
 func commandOllie(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {

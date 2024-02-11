@@ -35,16 +35,18 @@ var idle bool
 // - idle and reset
 
 // Start blacksmith script.
-func initBlacksmith() {
-	blacksmith = ns.Object("Blacksmith")
-	blacksmithSpawn = blacksmith.Pos()
-	brazier := ns.FindClosestObject(blacksmith, ns.HasTypeName{"Brazier"})
-	brazier.Freeze(true)
-	water := ns.FindClosestObject(blacksmith, ns.HasTypeName{"WaterBarrel"})
-	quenchingWaterSpawn = water.Pos()
-	// Animation
-	heatingColdSword = true
-	heatUpColdWeapon()
+func init() {
+	OnLateInit(func() {
+		blacksmith = ns.Object("Blacksmith")
+		blacksmithSpawn = blacksmith.Pos()
+		brazier := ns.FindClosestObject(blacksmith, ns.HasTypeName{"Brazier"})
+		brazier.Freeze(true)
+		water := ns.FindClosestObject(blacksmith, ns.HasTypeName{"WaterBarrel"})
+		quenchingWaterSpawn = water.Pos()
+		// Animation
+		heatingColdSword = true
+		heatUpColdWeapon()
+	})
 }
 
 func heatUpColdWeapon() {

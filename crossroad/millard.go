@@ -8,18 +8,20 @@ import (
 var millard ns.Obj
 var millardSpawn ns.Pointf
 
-func initMillard() {
-	if ns.Object("Millard") != nil {
-		millard = ns.Object("Millard")
-	} else {
-		// Fix spawn
-		millard = ns.CreateObject("NPC", ns.GetHost())
-	}
-	millardSpawn = millard.Pos()
-	ns.StoryPic(millard, "MalePic2")
-	ns.SetDialog(millard, ns.DialogNormal, millard_TroubleAtTheManaMines, millardDialogueEnd)
-	ns.Object("MineDoor1").Lock(true)
-	ns.Object("MineDoor2").Lock(true)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Millard") != nil {
+			millard = ns.Object("Millard")
+		} else {
+			// Fix spawn
+			millard = ns.CreateObject("NPC", ns.GetHost())
+		}
+		millardSpawn = millard.Pos()
+		ns.StoryPic(millard, "MalePic2")
+		ns.SetDialog(millard, ns.DialogNormal, millard_TroubleAtTheManaMines, millardDialogueEnd)
+		ns.Object("MineDoor1").Lock(true)
+		ns.Object("MineDoor2").Lock(true)
+	})
 }
 
 func millard_TroubleAtTheManaMines() {

@@ -9,16 +9,18 @@ import (
 var brigadin ns.Obj
 var brigadinSpawn ns.Pointf
 
-func initBrigadin() {
-	if ns.Object("Brigadin") != nil {
-		brigadin = ns.Object("Brigadin")
-	} else {
-		// Fix spawn
-		brigadin = ns.CreateObject("NPC", ns.GetHost())
-	}
-	brigadinSpawn = brigadin.Pos()
-	ns.StoryPic(brigadin, "Warrior4Pic")
-	ns.SetDialog(brigadin, ns.DialogNormal, brigadinDialogueStart, brigadinDialogueEnd)
+func init() {
+	OnLateInit(func() {
+		if ns.Object("Brigadin") != nil {
+			brigadin = ns.Object("Brigadin")
+		} else {
+			// Fix spawn
+			brigadin = ns.CreateObject("NPC", ns.GetHost())
+		}
+		brigadinSpawn = brigadin.Pos()
+		ns.StoryPic(brigadin, "Warrior4Pic")
+		ns.SetDialog(brigadin, ns.DialogNormal, brigadinDialogueStart, brigadinDialogueEnd)
+	})
 }
 
 func brigadinDialogueStart() {
