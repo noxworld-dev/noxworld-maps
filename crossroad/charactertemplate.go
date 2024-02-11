@@ -45,7 +45,7 @@ func template_FollowUpQuestDialogue() {
 		ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 		ns.TellStory(audio.HumanMaleEatFood, "FILL IN BLANKS") //
 		updateMyQuestData(ns.GetCaller().Player(), func(data *MyAccountData) {
-			FollowUpQuestDialogue := 2
+			data.Quest.General.FollowUpQuestDialogue = 2
 		})
 	case 2:
 	case 3:

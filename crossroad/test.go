@@ -21,13 +21,13 @@ func initTest() {
 
 func testDialogueStart() {
 	test.LookAtObject(ns.GetCaller())
-	data := loadMyQuestData(ns.GetCaller().Player())
+	//data := loadMyQuestData(ns.GetCaller().Player())
 	ns.TellStory(audio.OgreBruteDie, "Do you want to help the mines?")
 
 }
 
 func testDialogueEnd() {
-	data := loadMyQuestData(ns.GetCaller().Player())
+	//data := loadMyQuestData(ns.GetCaller().Player())
 	switch ns.GetAnswer(test) {
 	case ns.AnswerGoodbye:
 		// Goodbye

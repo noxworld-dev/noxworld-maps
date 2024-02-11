@@ -28,7 +28,7 @@ func TestAccountData(t *testing.T) {
 
 		data := loadMyQuestData(pl)
 		data.Character.Name = "Test"
-		data.Quest.JoinTheFireKnights = true
+		data.Quest.Warrior.JoinTheFireKnights = 1
 		saveMyQuestData(pl, data)
 
 		data2 := loadMyQuestData(pl)

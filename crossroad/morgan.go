@@ -65,7 +65,7 @@ func morganDialogueStart() {
 
 func morganDialogueManaMinesQuest() {
 	morgan.LookAtObject(ns.GetCaller())
-	data := loadMyQuestData(ns.GetCaller().Player())
+	//data := loadMyQuestData(ns.GetCaller().Player())
 	if 1 == 1 {
 		resetMillardDialogue()
 	} else {
