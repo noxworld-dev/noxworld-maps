@@ -31,6 +31,7 @@ func OnLateInit(fnc func()) {
 
 // Initial server boot function.
 func init() {
+	ns.PrintStrToAll("Hello world")
 	ns.Music(22, 100)
 	ns.OnChat(onCommand)
 	ns.NewTimer(ns.Frames(5), func() {
