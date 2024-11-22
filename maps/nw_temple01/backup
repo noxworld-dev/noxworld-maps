@@ -1,0 +1,32 @@
+
+func moveMechSuit() {
+	if mechActive {
+		ns.GetHost().Enchant(enchant.INVULNERABLE, ns.Infinite())
+		mechSuit.SetPos(ns.GetHost().Pos().Add(ns.Pointf{X: +1, Y: +10}))
+		mechSuit.LookAtObject(ns.GetHost().CursorPos())
+		if cursorMovement == ns.GetHost().CursorPos() && !mechIdle {
+			mechSuit.Idle()
+			mechIdle = true
+		} else {
+			if mechIdle {
+				mechIdle = false
+				mechSuit.WalkTo(ns.GetHost().CursorPos())
+				cursorMovement = ns.GetHost().CursorPos()
+			}
+		}
+	}
+}
+
+case "-mechsuit":
+	mechSuit = ns.CreateObject("MechanicalGolem", ns.GetHost().Pos())
+	mechSuit.SetOwner(ns.GetHost())
+	mechActive = true
+	cursorMovement = ns.GetHost().CursorPos()
+	mechSuit.FlagsEnable(object.FlagAllowOverlap)
+	mechSuit.FlagsEnable(object.FlagNoPushCharacters)
+	mechSuit.OnEvent(ns.EventDeath, func() {
+		mechActive = false
+		ns.GetHost().EnchantOff(enchant.INVULNERABLE)
+	})
+	ns.GetHost().DestroyChat()
+}
