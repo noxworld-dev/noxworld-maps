@@ -1,0 +1,60 @@
+package noxworld
+
+import (
+	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/noxscript/ns/v4/audio"
+)
+
+func init() {
+	ns.NewTimer(ns.Frames(1), func() {
+		ns.StoryPic(ns.Object("Henrick"), "HenrickPic")
+		henrickInit()
+	})
+}
+
+func henrickInit() {
+	ns.SetDialog(ns.Object("Henrick"), ns.DialogYesNo, henrickDialogueStart, henrickDialogueEnd)
+}
+
+func henrickDialogueStart() {
+	ns.Object("Henrick").LookAtObject(ns.GetCaller())
+	p := ns.GetCaller().Player()
+	data := loadMyNoxWorldData(p)
+	switch data.Character.WolfCompanion {
+	case 0:
+		ns.TellStory(audio.HumanMaleEatFood, "War08b:HenrickSalesPitchA")
+	case 1:
+		ns.TellStory(audio.HumanMaleEatFood, "War08b:HenrickSalesPitchB")
+	case 2:
+		ns.SetDialog(ns.Object("Henrick"), ns.DialogNormal, henrickDialogueStart, henrickDialogueEnd)
+		ns.TellStory(audio.HumanMaleEatFood, "War08b:HenrickNoMoreWolves")
+		henrickInit()
+	}
+}
+
+func henrickDialogueEnd() {
+	switch ns.GetAnswer(ns.Object("Henrick")) {
+	case ns.AnswerGoodbye:
+		henrickInit()
+	case ns.AnswerYes:
+		if ns.GetCaller().GetGold() < 200 {
+			ns.SetDialog(ns.Object("Henrick"), ns.DialogNormal, henrickDialogueStart, henrickDialogueEnd)
+			ns.TellStory(audio.HumanMaleEatFood, "war08b:HenrickNotEnoughGold")
+			henrickInit()
+		} else {
+			ns.SetDialog(ns.Object("Henrick"), ns.DialogNormal, henrickDialogueStart, henrickDialogueEnd)
+			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				data.Character.WolfCompanion++
+			})
+			ns.TellStory(audio.HumanMaleEatFood, "War08b:HenrickSaleSuccessful")
+			ns.GetCaller().ChangeGold(-200)
+			wolf := ns.CreateObject("Wolf", ns.Waypoint("WolfCreateWP"))
+			wolf.SetOwner(ns.GetCaller())
+			wolf.Follow(ns.GetCaller())
+			henrickInit()
+			wolf.OnEvent(ns.EventDeath, func() {})
+		}
+	case ns.AnswerNo:
+		henrickInit()
+	}
+}
