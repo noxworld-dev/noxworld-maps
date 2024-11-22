@@ -1,7 +1,12 @@
 To help you can add the NPC name, voicelines and picture so I can easly build the campaign:
 
 For example:
-StoryPic("ArchivistPic")
-Wiz02:ArchivistSnob	Lads, escort this madman out of here.
-Wiz02:ArchivistSurprise	Hey, you shouldn't be in here. Who are you?
-Wiz02:ArchivistWimp	Help!
+
+Map: wiz02b
+NPC name: Zaris
+StoryPic("WizardGuard1Pic")
+Wiz02B.scr:ArchivistTalk01	Can I help you, son?
+Wiz02B.scr:ArchivistTalk02	I'm sorry, but I can't let you into the library unless you know what you're looking for. Can't let just anyone run around down there damaging books, can I?
+Wiz02B.scr:ArchivistTalk03	I told you, I can't let you into the library unless you have a legitimate reason to be down there. Now stop bothering me.
+Wiz02B.scr:ArchivistTalk04	Don't make me hurt you.
+Wiz02B.scr:ArchivistTalk05	Horvath asked you to you fetch something for him, eh? Sure thing, son. Let me unlock the gates for you. One moment.
