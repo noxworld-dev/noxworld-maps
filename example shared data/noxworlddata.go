@@ -29,6 +29,7 @@ type NoxWorldData struct {
 		ItemsInInventory []ns.Obj
 	}
 	Quest struct {
+		// ix
 		TalkToTheMayor_Quest01                    QuestStatus
 		BecomeConjurerer_Quest01                  QuestStatus
 		MayorsScepter_Quest01                     QuestStatus
