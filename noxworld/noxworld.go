@@ -6,18 +6,17 @@ import (
 )
 
 func init() {
-	ns.Runtime().OnPlayerJoin(playerJoin)
-	ns.Runtime().OnPlayerLeave(playerLeave)
-	ns.Runtime().OnMapEvent(ns.MapEntry, moveToEntry)
-	ns.OnChat(onCommand)
-}
-
-func OnFrame() {
+	if r := ns.Runtime(); r != nil {
+		r.OnPlayerJoin(playerJoin)
+		r.OnPlayerLeave(playerLeave)
+		r.OnMapEvent(ns.MapEntry, moveToEntry)
+		ns.OnChat(onCommand)
+	}
 }
 
 func onCommand(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 	if p != nil && p == ns.GetHost().Player() {
-		data := loadMyNoxWorldData(ns.GetHost().Player())
+		data := LoadPlayer(p)
 		switch msg {
 		case "-test":
 			ns.PrintStrToAll("DEBUG")
@@ -32,9 +31,9 @@ func onCommand(t ns.Team, p ns.Player, obj ns.Obj, msg string) string {
 }
 
 func checkIfRegistered(p ns.Player) {
-	data := loadMyNoxWorldData(p)
+	data := LoadPlayer(p)
 	if !data.Character.Registered {
-		updateNoxWorldData(ns.GetHost().Player(), func(data *NoxWorldData) {
+		UpdatePlayer(p, func(data *PlayerData) {
 			data.Character.Registered = true
 			ns.AudioEvent(audio.JournalEntryAdd, p.Unit())
 			p.PrintStr("Welcome to the open world Nox server. Your character has now been registered!")

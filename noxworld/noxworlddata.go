@@ -15,7 +15,7 @@ const (
 	QuestComplete = QuestStatus(10)
 )
 
-type NoxWorldData struct {
+type PlayerData struct {
 	Character struct {
 		// General
 		Registered       bool
@@ -45,8 +45,8 @@ type NoxWorldData struct {
 	}
 }
 
-func loadMyNoxWorldData(pl ns.Player) NoxWorldData {
-	var data NoxWorldData
+func LoadPlayer(pl ns.Player) PlayerData {
+	var data PlayerData
 	err := pl.Store(ns.Persistent{Name: "noxworld"}).Get("accountdata", &data)
 	if err != nil {
 		fmt.Println("cannot read data:", err)
@@ -54,15 +54,15 @@ func loadMyNoxWorldData(pl ns.Player) NoxWorldData {
 	return data
 }
 
-func saveMyNoxWorldData(pl ns.Player, data NoxWorldData) {
+func SavePlayer(pl ns.Player, data PlayerData) {
 	err := pl.Store(ns.Persistent{Name: "noxworld"}).Set("accountdata", &data)
 	if err != nil {
 		fmt.Println("cannot save data:", err)
 	}
 }
 
-func updateNoxWorldData(pl ns.Player, fnc func(data *NoxWorldData)) {
-	data := loadMyNoxWorldData(pl)
+func UpdatePlayer(pl ns.Player, fnc func(data *PlayerData)) {
+	data := LoadPlayer(pl)
 	fnc(&data)
-	saveMyNoxWorldData(pl, data)
+	SavePlayer(pl, data)
 }

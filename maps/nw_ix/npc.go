@@ -1,4 +1,4 @@
-package noxworld
+package nw_ix
 
 //func enableEnhancedEnemies() {
 //	ns.NewTimer(ns.Frames(1), func() {

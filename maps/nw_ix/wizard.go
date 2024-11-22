@@ -1,4 +1,4 @@
-package noxworld
+package nw_ix
 
 func init() {
 }
