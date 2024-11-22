@@ -1,0 +1,7 @@
+To help you can add the NPC name, voicelines and picture so I can easly build the campaign:
+
+For example:
+StoryPic("ArchivistPic")
+Wiz02:ArchivistSnob	Lads, escort this madman out of here.
+Wiz02:ArchivistSurprise	Hey, you shouldn't be in here. Who are you?
+Wiz02:ArchivistWimp	Help!
