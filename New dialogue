@@ -1,0 +1,59 @@
+To build the campaign for all classes I need more dialogue.
+This is exisiting dialogue with notes describing what needs updates.
+
+Aldwyn con02a:
+TODO: locate dialogue file
+Con02a:AldwinImp	Wild beasts have invaded the Mana Mines, threatening many workers. One from our ranks must go, take charge and tame these abominable creatures.
+NEW: 
+Wild beasts have invaded the Mana Mines, threatening many workers. One from our ranks has gone. Find my apprentice and tame these abominable creatures.
+
+Morgan con02a:
+TODO: locate dialogue file
+Con02a:ConManSale	There ya go! That bow was made for you. You can't lose the contest with a bow like that.
+NEW:
+Con02a:ConManSale	There ya go! That bow was made for you.
+
+ContestOfficial con02a:
+TODO: locate dialogue file
+Con02a:ContestGreeting	I'm today's contest judge. Today's best score is 8 out of 10 hits on the target. You need at least 9 to win.
+Each entrant gets a quiver. This one is yours. Take it to the firing line when you're ready.
+
+Mayor Theogrin con02a:
+TODO: locate dialogue file
+Con02a:MayorProd	I shall not emerge till the spiders are gone! Use your Charm spell to control them! And banish them! Hurry before they multiply again!
+NEW:
+I shall not emerge till the spiders are gone! Have Aldwyn use his Charm spell to control them! And banish them! Hurry before they multiply again!
+//
+Con02a:MayorsReward	Brave Wizard, my deepest thanks! You are worthy of your new title. The guards will be informed that you are now free to come and go from Ix as you please.
+Take this gold as payment for your service. I insist.
+NEW CON:
+Con02a:MayorsReward	Brave Conjurer, my deepest thanks! You are worthy of your new title. Take this gold as payment for your service. I insist.
+NEW WIZ:
+Con02a:MayorsReward	Brave Wizard, my deepest thanks! Take this gold as payment for your service. I insist.
+NEW WAR:
+Con02a:MayorsReward	Brave Warrior, my deepest thanks! Take this gold as payment for your service. I insist.
+
+Hermit Con03a
+TODO: locate dialogue file
+Con03A.scr:HermitHappy	My spectacles! You brought them back! May all that is great bless you! And please, take this scroll. It contains all I have learned about bats. It would be invaluable to any conjurer.
+NEW:
+Con03A.scr:HermitHappy	My spectacles! You brought them back! May all that is great bless you! And please, take this scroll. It contains all I have learned about bats. It would be invaluable any adventurer.
+
+Bridge Guard con02a:
+TODO: locate dialogue file
+Con02a:BridgeGuardGuarding	Sorry, mate, the bridge is washed out! Only way across the stream is there, through the Urchin den. But, if you choose that route, mate, keep your guard up! The Urchins stole my best boots when I was bathing!
+If you bring 'em back, mate, I'll teach you a damn fine spell.
+NEW:
+Mate, keep your guard up! The Urchins stole my best boots when I was bathing! If you bring 'em back, mate, I'll teach you a damn fine spell.
+
+Jandor con03a:
+TODO: locate dialogue file
+Con03A.scr:JandorB	Gather whatever supplies you need from these merchants and return to me when you are ready to leave.
+NEW:
+Gather whatever supplies you need from these merchants and travel to the Field of Valor.
+
+Continue from: Con03B.scr
+
+
+
+
