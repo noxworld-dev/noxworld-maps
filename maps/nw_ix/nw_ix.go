@@ -1,4 +1,4 @@
-package noxworld
+package nw_ix
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
@@ -7,6 +7,8 @@ import (
 	"github.com/noxworld-dev/noxscript/ns/v4/enchant"
 	"github.com/noxworld-dev/noxscript/ns/v4/spell"
 	"github.com/noxworld-dev/opennox-lib/object"
+
+	nw "github.com/noxworld-dev/noxworld-maps/noxworld"
 )
 
 var MayorsFear ns.Obj
@@ -72,23 +74,20 @@ func init() {
 }
 
 func IxToCrossRoads() {
-	updateNoxWorldData(ns.GetHost().Player(), func(data *NoxWorldData) {
-		data.Character.LastExitUsed = "IxToCrossRoads"
-		ns.LoadMap("nw_xroad", &ns.LoadMapOptions{HideTitleScreen: true})
+	nw.GoToMap(ns.GetHost().Player(), nw.MapCrossroads, nw.GoToMapOptions{
+		Exit: "IxToCrossRoads",
 	})
 }
 
 func IxToIxCem() {
-	updateNoxWorldData(ns.GetHost().Player(), func(data *NoxWorldData) {
-		data.Character.LastExitUsed = "IxToIxCem"
-		ns.LoadMap("nw_ixcem", &ns.LoadMapOptions{HideTitleScreen: true})
+	nw.GoToMap(ns.GetHost().Player(), nw.MapIxCemetery, nw.GoToMapOptions{
+		Exit: "IxToIxCem",
 	})
 }
 
 func IxToTemple01() {
-	updateNoxWorldData(ns.GetHost().Player(), func(data *NoxWorldData) {
-		data.Character.LastExitUsed = "IxToTemple01"
-		ns.LoadMap("nw_temple01", &ns.LoadMapOptions{HideTitleScreen: true})
+	nw.GoToMap(ns.GetHost().Player(), nw.MapIxTemple1, nw.GoToMapOptions{
+		Exit: "IxToTemple01",
 	})
 }
 
@@ -99,7 +98,7 @@ func MysticInit() {
 func MysticDialogueStart() {
 	ns.Object("Mystic").LookAtObject(ns.GetCaller())
 	p := ns.GetCaller().Player()
-	//data := loadMyNoxWorldData(p)
+	//data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0:
 		rnd := ns.Random(1, 2)
@@ -131,7 +130,7 @@ func JulieDialogueStart() {
 	ns.Object("Julie").LookAtObject(ns.GetCaller())
 	ns.Object("Julie").Idle()
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0:
 		switch data.Quest.SpidersAtTheMayor_Quest01 {
@@ -185,7 +184,7 @@ func EdDialogueStart() {
 	ns.Object("Ed").LookAtObject(ns.GetCaller())
 
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0:
 		ns.TellStory("SwordsmanHurt", "War08a:Guard02Greet")
@@ -348,7 +347,7 @@ func Mayor_TheogrinInit() {
 }
 func Mayor_TheogrinDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 		switch data.Quest.SpidersAtTheMayor_Quest01 {
@@ -356,7 +355,7 @@ func Mayor_TheogrinDialogueStart() {
 			ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 			ns.PrintStr("Find Aldwyn to help banish the spiders in the Mayor's home.")
 			ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorGreeting")
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 1
 			})
 		case 1:
@@ -368,7 +367,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 5
 				})
 			}
@@ -381,7 +380,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 5
 				})
 			}
@@ -394,7 +393,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 5
 				})
 			}
@@ -416,7 +415,7 @@ func Mayor_TheogrinDialogueStart() {
 			ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 			ns.PrintStr("Find Aldwyn to help banish the spiders in the Mayor's home.")
 			ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorGreeting")
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 1
 			})
 		case 1:
@@ -428,7 +427,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 5
 				})
 			}
@@ -441,7 +440,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 5
 				})
 			}
@@ -454,7 +453,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 5
 				})
 			}
@@ -465,7 +464,7 @@ func Mayor_TheogrinDialogueStart() {
 			ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 			ns.PrintStr("Charm and banish the spiders in the Mayor's home.")
 			ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorGreeting")
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 1
 			})
 		case 1:
@@ -478,7 +477,7 @@ func Mayor_TheogrinDialogueStart() {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("You have completed an objective!")
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:MayorFree")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.SpidersAtTheMayor_Quest01 = 2
 				})
 			}
@@ -488,7 +487,7 @@ func Mayor_TheogrinDialogueStart() {
 }
 func Mayor_TheogrinDialogueEnd() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 		switch data.Quest.SpidersAtTheMayor_Quest01 {
@@ -498,7 +497,7 @@ func Mayor_TheogrinDialogueEnd() {
 			ns.GetCaller().ChangeGold(+200)
 			ns.PrintStr("You gained 200 gold!")
 			ns.AudioEvent(audio.TreasurePickup, ns.GetCaller())
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 10
 			})
 			ns.Object("MayorsBedroomDoor").Lock(false)
@@ -533,7 +532,7 @@ func Mayor_TheogrinDialogueEnd() {
 			ns.GetCaller().ChangeGold(+200)
 			ns.PrintStr("You gained 200 gold!")
 			ns.AudioEvent(audio.TreasurePickup, ns.GetCaller())
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 10
 			})
 			ns.Object("MayorsBedroomDoor").Lock(false)
@@ -567,7 +566,7 @@ func Mayor_TheogrinDialogueEnd() {
 			ns.GetCaller().ChangeGold(+200)
 			ns.PrintStr("You gained 200 gold!")
 			ns.AudioEvent(audio.TreasurePickup, ns.GetCaller())
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 10
 			})
 		case 10:
@@ -580,7 +579,7 @@ func TommyInit() {
 }
 func TommyDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0:
 		rnd := ns.Random(1, 2)
@@ -621,13 +620,13 @@ func Mayors_GuardInit() {
 }
 func Mayors_GuardDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch data.Quest.SpidersAtTheMayor_Quest01 {
 	case 0:
 		if data.Quest.TalkToTheMayor_Quest01 == 0 && data.Quest.SpidersAtTheMayor_Quest01 == 0 {
 			ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 			ns.PrintStr("Talk to the Mayor.")
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.TalkToTheMayor_Quest01 = 10
 			})
 		}
@@ -705,7 +704,7 @@ func AldwynInit() {
 }
 func AldwynDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 		switch data.Quest.SpidersAtTheMayor_Quest01 {
@@ -714,14 +713,14 @@ func AldwynDialogueStart() {
 			if data.Quest.TalkToAldwyn_Quest01 == 0 {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("Bring Aldwyn to the spider to banish it.")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.TalkToAldwyn_Quest01 = 10
 				})
 			}
 			ns.Object("Aldwyn").ChatStr("Lead the way.")
 			ns.TellStory(audio.SwordsmanHurt, "War03b:AldwynIntro")
 			ns.Object("Aldwyn").Follow(ns.GetCaller())
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 3
 			})
 		case 3:
@@ -733,7 +732,7 @@ func AldwynDialogueStart() {
 					necroEvent()
 					ns.Effect(effect.SUMMON_CANCEL, MayorsFear, MayorsFear)
 					ns.AudioEvent(audio.SummonAbort, ns.Object("Aldwyn"))
-					updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+					nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 						data.Quest.SpidersAtTheMayor_Quest01 = 4
 					})
 				} else {
@@ -748,7 +747,7 @@ func AldwynDialogueStart() {
 				case 0:
 					ns.SetDialog(ns.Object("Aldwyn"), ns.DialogNormal, AldwynDialogueStart, AldwynDialogueEnd)
 					ns.TellStory(audio.SwordsmanHurt, "War03b:AldwynIntro")
-					updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+					nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 						data.Quest.AldwynGiveScrollWar_MayorsScepterQuest_01 = 10
 					})
 				case 10:
@@ -766,13 +765,13 @@ func AldwynDialogueStart() {
 			if data.Quest.TalkToAldwyn_Quest01 == 0 {
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("Bring Aldwyn to the spider to banish it.")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.TalkToAldwyn_Quest01 = 10
 				})
 			}
 			ns.Object("Aldwyn").ChatStr("Theogrin is trying to kill the spiders? Allow me to assist instead.")
 			ns.Object("Aldwyn").Follow(ns.GetCaller())
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.SpidersAtTheMayor_Quest01 = 3
 			})
 		case 3:
@@ -784,7 +783,7 @@ func AldwynDialogueStart() {
 					necroEvent()
 					ns.Effect(effect.SUMMON_CANCEL, MayorsFear, MayorsFear)
 					ns.AudioEvent(audio.SummonAbort, ns.Object("Aldwyn"))
-					updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+					nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 						data.Quest.SpidersAtTheMayor_Quest01 = 4
 					})
 				} else {
@@ -805,7 +804,7 @@ func AldwynDialogueStart() {
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinImp")
 				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
 				ns.PrintStr("Go to the mines and locate the mine foreman.")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.TroubleAtTheManaMines_Quest01 = 1
 				})
 			case 1:
@@ -820,7 +819,7 @@ func AldwynDialogueStart() {
 
 func AldwynDialogueEnd() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch data.Quest.BecomeConjurerer_Quest01 {
 	case 0:
 		// find aldwyn update quest
@@ -842,19 +841,19 @@ func AldwynDialogueEnd() {
 				}
 				ns.SetDialog(ns.Object("Aldwyn"), ns.DialogNext, AldwynDialogueStart, AldwynDialogueEnd)
 				ns.TellStory(audio.SwordsmanHurt, "Con02a:BecomeConjurer")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.BecomeConjurerer_Quest01 = 1
 				})
 			}
 		}
 	case 1:
 		ns.TellStory("SwordsmanHurt", "Con02a:BecomeConjurer2")
-		updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+		nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 			data.Quest.BecomeConjurerer_Quest01 = 2
 		})
 	case 2:
 		ns.TellStory("SwordsmanHurt", "Con02a:BecomeConjurer3")
-		updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+		nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 			data.Quest.BecomeConjurerer_Quest01 = 10
 		})
 	case 3:
@@ -868,7 +867,7 @@ func MorganInit() {
 func MorganDialogueStart() {
 	ns.SetDialog(ns.Object("Morgan"), ns.DialogYesNo, MorganDialogueStart, MorganDialogueEnd)
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 		switch data.Quest.MorganConManSellBow_Quest01 {
@@ -913,7 +912,7 @@ func MorganDialogueEnd() {
 		} else {
 			ns.SetDialog(ns.Object("Morgan"), ns.DialogNormal, MorganDialogueStart, MorganDialogueEnd)
 			ns.TellStory("SwordsmanHurt", "Con02a:ConManSale")
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.MorganConManSellBow_Quest01 = 10
 			})
 			bow := ns.CreateObject("Bow", ns.GetCaller())
@@ -934,7 +933,7 @@ func Contest_GuardInit() {
 }
 func Contest_GuardDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 		switch data.Quest.MayorsScepter_Quest01 {
@@ -993,7 +992,7 @@ func Contest_GuardDialogueEnd() {
 				ns.SetDialog(ns.Object("Contest_Guard"), ns.DialogNormal, Contest_GuardDialogueStart, Contest_GuardDialogueEnd)
 				ns.AudioEvent(audio.JournalEntryAdd, ns.GetCaller())
 				ns.PrintStr("Talk to the contest official to begin the archery contest.")
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.ArcheryContest_Quests01 = 1
 				})
 				ns.TellStory(audio.HumanMaleEatFood, "Con02a:EnterContest")
@@ -1016,7 +1015,7 @@ func Contest_OfficialInit() {
 }
 func Contest_OfficialDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 	case 1: // wiz
@@ -1026,7 +1025,7 @@ func Contest_OfficialDialogueStart() {
 			ns.SetDialog(ns.Object("Contest_Official"), ns.DialogNext, Contest_OfficialDialogueStart, Contest_OfficialInitDialogueEnd)
 			ns.TellStory(audio.SwordsmanHurt, "Con02a:ContestGreeting")
 			// I'm today's contest judge. Today's best score is 8 out of 10 hits on the target. You need at least 9 to win.
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Quest.ArcheryContest_Quests01 = 2
 			})
 		case 2:
@@ -1034,7 +1033,7 @@ func Contest_OfficialDialogueStart() {
 				ns.Object("Contest_Official").ChatStr("Hold on! We've to finish this first.")
 			} else {
 				ArcheryContestActive = true
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.ArcheryContest_Quests01 = 3
 				})
 				ns.SetDialog(ns.Object("Contest_Official"), ns.DialogNormal, Contest_OfficialDialogueStart, Contest_OfficialInitDialogueEnd)
@@ -1061,7 +1060,7 @@ func Contest_OfficialDialogueStart() {
 					ns.GetCaller().ChangeGold(+50)
 					ns.PrintStr("You gained 50 gold!")
 					ns.AudioEvent(audio.TreasurePickup, ns.GetCaller())
-					updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+					nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 						data.Quest.ArcheryContest_Quests01 = 10
 					})
 					// 	Congratulations to our new Champion Archer! Your prize is 50 gold pieces.
@@ -1077,7 +1076,7 @@ func Contest_OfficialDialogueStart() {
 }
 func Contest_OfficialInitDialogueEnd() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 	case 1: // wiz
@@ -1088,7 +1087,7 @@ func Contest_OfficialInitDialogueEnd() {
 				ns.Object("Contest_Official").ChatStr("Hold on! We've to finish this first.")
 			} else {
 				ArcheryContestActive = true
-				updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 					data.Quest.ArcheryContest_Quests01 = 3
 				})
 				ns.SetDialog(ns.Object("Contest_Official"), ns.DialogNormal, Contest_OfficialDialogueStart, Contest_OfficialInitDialogueEnd)
@@ -1117,11 +1116,11 @@ func Contest_OfficialInitDialogueEnd() {
 					if ArcheryContestActive {
 						Contest_OfficialInit()
 						ns.Object("Contest_Official").ChatStr("Hold on! We've to finish this first.")
-						updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+						nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 							data.Quest.ArcheryContest_Quests01 = 2
 						})
 					} else {
-						updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+						nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 							data.Quest.ArcheryContest_Quests01 = 2
 						})
 						ns.SetDialog(ns.Object("Contest_Official"), ns.DialogNext, Contest_OfficialDialogueStart, Contest_OfficialInitDialogueEnd)
@@ -1151,7 +1150,7 @@ func GeoffInit() {
 }
 func GeoffDialogueStart() {
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch p.Unit().GetClass() {
 	case 0: // war
 		rnd := ns.Random(1, 2)
@@ -1288,7 +1287,7 @@ func tanyaDialogueStart() {
 		case 2:
 			ns.TellStory(audio.HumanFemaleEatApple, "Con02A:Maiden3Talk01") // 	Leave the bickering to the Warriors and the Wizards. If you need something done, get a Conjurer.
 		case 3:
-			data := loadMyNoxWorldData(p)
+			data := nw.LoadPlayer(p)
 			if data.Quest.MayorsScepter_Quest01 == 10 {
 				ns.TellStory(audio.SwordsmanHurt, "Con02A:Maiden2Talk01")
 			} else {
@@ -1363,7 +1362,7 @@ func henrickDialogueStart() {
 	//Con02A:HenrickTalk06	So you're a Conjurer now! Welcome to the brotherhood! As keepers of the lands, we have many responsibilities. I'm sure you'll honor us through your travels.
 	ns.Object("Henrick").LookAtObject(ns.GetCaller())
 	p := ns.GetCaller().Player()
-	data := loadMyNoxWorldData(p)
+	data := nw.LoadPlayer(p)
 	switch data.Character.WolfCompanion {
 	case 0:
 		ns.TellStory(audio.HumanMaleEatFood, "War08b:HenrickSalesPitchA")
@@ -1387,7 +1386,7 @@ func henrickDialogueEnd() {
 			henrickInit()
 		} else {
 			ns.SetDialog(ns.Object("Henrick"), ns.DialogNormal, henrickDialogueStart, henrickDialogueEnd)
-			updateNoxWorldData(ns.GetCaller().Player(), func(data *NoxWorldData) {
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
 				data.Character.WolfCompanion++
 			})
 			ns.TellStory(audio.HumanMaleEatFood, "War08b:HenrickSaleSuccessful")

@@ -1,13 +1,15 @@
-package noxworld
+package nw_ix
 
 import (
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
 	"github.com/noxworld-dev/noxscript/ns/v4/effect"
+
+	nw "github.com/noxworld-dev/noxworld-maps/noxworld"
 )
 
 func archeryContest(p ns.Player) {
-	updateNoxWorldData(p, func(data *NoxWorldData) {
+	nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 		data.Quest.ArcheryContestScore_Quest01 = 0
 	})
 	wp := ns.Random(1, 3)
@@ -22,7 +24,7 @@ func archeryContest(p ns.Player) {
 				ns.Object("Heckler").ChatStr("That's a MISS!")
 			} else {
 				ns.Object("Heckler").ChatStr("That's a HIT!")
-				updateNoxWorldData(p, func(data *NoxWorldData) {
+				nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 					data.Quest.ArcheryContestScore_Quest01++
 				})
 			}
@@ -38,7 +40,7 @@ func archeryContest(p ns.Player) {
 				ns.Object("Heckler").ChatStr("That's a MISS!")
 			} else {
 				ns.Object("Heckler").ChatStr("That's a HIT!")
-				updateNoxWorldData(p, func(data *NoxWorldData) {
+				nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 					data.Quest.ArcheryContestScore_Quest01++
 				})
 			}
@@ -54,7 +56,7 @@ func archeryContest(p ns.Player) {
 				ns.Object("Heckler").ChatStr("That's a MISS!")
 			} else {
 				ns.Object("Heckler").ChatStr("That's a HIT!")
-				updateNoxWorldData(p, func(data *NoxWorldData) {
+				nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 					data.Quest.ArcheryContestScore_Quest01++
 				})
 			}
@@ -74,7 +76,7 @@ func archeryContest(p ns.Player) {
 					ns.Object("Heckler").ChatStr("That's a MISS!")
 				} else {
 					ns.Object("Heckler").ChatStr("That's a HIT!")
-					updateNoxWorldData(p, func(data *NoxWorldData) {
+					nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 						data.Quest.ArcheryContestScore_Quest01++
 					})
 				}
@@ -90,7 +92,7 @@ func archeryContest(p ns.Player) {
 					ns.Object("Heckler").ChatStr("That's a MISS!")
 				} else {
 					ns.Object("Heckler").ChatStr("That's a HIT!")
-					updateNoxWorldData(p, func(data *NoxWorldData) {
+					nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 						data.Quest.ArcheryContestScore_Quest01++
 					})
 				}
@@ -106,7 +108,7 @@ func archeryContest(p ns.Player) {
 					ns.Object("Heckler").ChatStr("That's a MISS!")
 				} else {
 					ns.Object("Heckler").ChatStr("That's a HIT!")
-					updateNoxWorldData(p, func(data *NoxWorldData) {
+					nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 						data.Quest.ArcheryContestScore_Quest01++
 					})
 				}
@@ -126,7 +128,7 @@ func archeryContest(p ns.Player) {
 						ns.Object("Heckler").ChatStr("That's a MISS!")
 					} else {
 						ns.Object("Heckler").ChatStr("That's a HIT!")
-						updateNoxWorldData(p, func(data *NoxWorldData) {
+						nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 							data.Quest.ArcheryContestScore_Quest01++
 						})
 					}
@@ -142,7 +144,7 @@ func archeryContest(p ns.Player) {
 						ns.Object("Heckler").ChatStr("That's a MISS!")
 					} else {
 						ns.Object("Heckler").ChatStr("That's a HIT!")
-						updateNoxWorldData(p, func(data *NoxWorldData) {
+						nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 							data.Quest.ArcheryContestScore_Quest01++
 						})
 					}
@@ -158,7 +160,7 @@ func archeryContest(p ns.Player) {
 						ns.Object("Heckler").ChatStr("That's a MISS!")
 					} else {
 						ns.Object("Heckler").ChatStr("That's a HIT!")
-						updateNoxWorldData(p, func(data *NoxWorldData) {
+						nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 							data.Quest.ArcheryContestScore_Quest01++
 						})
 					}
@@ -178,7 +180,7 @@ func archeryContest(p ns.Player) {
 							ns.Object("Heckler").ChatStr("That's a MISS!")
 						} else {
 							ns.Object("Heckler").ChatStr("That's a HIT!")
-							updateNoxWorldData(p, func(data *NoxWorldData) {
+							nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 								data.Quest.ArcheryContestScore_Quest01++
 							})
 						}
@@ -194,7 +196,7 @@ func archeryContest(p ns.Player) {
 							ns.Object("Heckler").ChatStr("That's a MISS!")
 						} else {
 							ns.Object("Heckler").ChatStr("That's a HIT!")
-							updateNoxWorldData(p, func(data *NoxWorldData) {
+							nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 								data.Quest.ArcheryContestScore_Quest01++
 							})
 						}
@@ -210,7 +212,7 @@ func archeryContest(p ns.Player) {
 							ns.Object("Heckler").ChatStr("That's a MISS!")
 						} else {
 							ns.Object("Heckler").ChatStr("That's a HIT!")
-							updateNoxWorldData(p, func(data *NoxWorldData) {
+							nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 								data.Quest.ArcheryContestScore_Quest01++
 							})
 						}
@@ -230,7 +232,7 @@ func archeryContest(p ns.Player) {
 								ns.Object("Heckler").ChatStr("That's a MISS!")
 							} else {
 								ns.Object("Heckler").ChatStr("That's a HIT!")
-								updateNoxWorldData(p, func(data *NoxWorldData) {
+								nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 									data.Quest.ArcheryContestScore_Quest01++
 								})
 							}
@@ -246,7 +248,7 @@ func archeryContest(p ns.Player) {
 								ns.Object("Heckler").ChatStr("That's a MISS!")
 							} else {
 								ns.Object("Heckler").ChatStr("That's a HIT!")
-								updateNoxWorldData(p, func(data *NoxWorldData) {
+								nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 									data.Quest.ArcheryContestScore_Quest01++
 								})
 							}
@@ -262,7 +264,7 @@ func archeryContest(p ns.Player) {
 								ns.Object("Heckler").ChatStr("That's a MISS!")
 							} else {
 								ns.Object("Heckler").ChatStr("That's a HIT!")
-								updateNoxWorldData(p, func(data *NoxWorldData) {
+								nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 									data.Quest.ArcheryContestScore_Quest01++
 								})
 							}
@@ -282,7 +284,7 @@ func archeryContest(p ns.Player) {
 									ns.Object("Heckler").ChatStr("That's a MISS!")
 								} else {
 									ns.Object("Heckler").ChatStr("That's a HIT!")
-									updateNoxWorldData(p, func(data *NoxWorldData) {
+									nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 										data.Quest.ArcheryContestScore_Quest01++
 									})
 								}
@@ -298,7 +300,7 @@ func archeryContest(p ns.Player) {
 									ns.Object("Heckler").ChatStr("That's a MISS!")
 								} else {
 									ns.Object("Heckler").ChatStr("That's a HIT!")
-									updateNoxWorldData(p, func(data *NoxWorldData) {
+									nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 										data.Quest.ArcheryContestScore_Quest01++
 									})
 								}
@@ -314,7 +316,7 @@ func archeryContest(p ns.Player) {
 									ns.Object("Heckler").ChatStr("That's a MISS!")
 								} else {
 									ns.Object("Heckler").ChatStr("That's a HIT!")
-									updateNoxWorldData(p, func(data *NoxWorldData) {
+									nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 										data.Quest.ArcheryContestScore_Quest01++
 									})
 								}
@@ -334,7 +336,7 @@ func archeryContest(p ns.Player) {
 										ns.Object("Heckler").ChatStr("That's a MISS!")
 									} else {
 										ns.Object("Heckler").ChatStr("That's a HIT!")
-										updateNoxWorldData(p, func(data *NoxWorldData) {
+										nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 											data.Quest.ArcheryContestScore_Quest01++
 										})
 									}
@@ -350,7 +352,7 @@ func archeryContest(p ns.Player) {
 										ns.Object("Heckler").ChatStr("That's a MISS!")
 									} else {
 										ns.Object("Heckler").ChatStr("That's a HIT!")
-										updateNoxWorldData(p, func(data *NoxWorldData) {
+										nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 											data.Quest.ArcheryContestScore_Quest01++
 										})
 									}
@@ -366,7 +368,7 @@ func archeryContest(p ns.Player) {
 										ns.Object("Heckler").ChatStr("That's a MISS!")
 									} else {
 										ns.Object("Heckler").ChatStr("That's a HIT!")
-										updateNoxWorldData(p, func(data *NoxWorldData) {
+										nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 											data.Quest.ArcheryContestScore_Quest01++
 										})
 									}
@@ -386,7 +388,7 @@ func archeryContest(p ns.Player) {
 											ns.Object("Heckler").ChatStr("That's a MISS!")
 										} else {
 											ns.Object("Heckler").ChatStr("That's a HIT!")
-											updateNoxWorldData(p, func(data *NoxWorldData) {
+											nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 												data.Quest.ArcheryContestScore_Quest01++
 											})
 										}
@@ -402,7 +404,7 @@ func archeryContest(p ns.Player) {
 											ns.Object("Heckler").ChatStr("That's a MISS!")
 										} else {
 											ns.Object("Heckler").ChatStr("That's a HIT!")
-											updateNoxWorldData(p, func(data *NoxWorldData) {
+											nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 												data.Quest.ArcheryContestScore_Quest01++
 											})
 										}
@@ -418,7 +420,7 @@ func archeryContest(p ns.Player) {
 											ns.Object("Heckler").ChatStr("That's a MISS!")
 										} else {
 											ns.Object("Heckler").ChatStr("That's a HIT!")
-											updateNoxWorldData(p, func(data *NoxWorldData) {
+											nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 												data.Quest.ArcheryContestScore_Quest01++
 											})
 										}
@@ -438,7 +440,7 @@ func archeryContest(p ns.Player) {
 												ns.Object("Heckler").ChatStr("That's a MISS!")
 											} else {
 												ns.Object("Heckler").ChatStr("That's a HIT!")
-												updateNoxWorldData(p, func(data *NoxWorldData) {
+												nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 													data.Quest.ArcheryContestScore_Quest01++
 												})
 											}
@@ -454,7 +456,7 @@ func archeryContest(p ns.Player) {
 												ns.Object("Heckler").ChatStr("That's a MISS!")
 											} else {
 												ns.Object("Heckler").ChatStr("That's a HIT!")
-												updateNoxWorldData(p, func(data *NoxWorldData) {
+												nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 													data.Quest.ArcheryContestScore_Quest01++
 												})
 											}
@@ -470,7 +472,7 @@ func archeryContest(p ns.Player) {
 												ns.Object("Heckler").ChatStr("That's a MISS!")
 											} else {
 												ns.Object("Heckler").ChatStr("That's a HIT!")
-												updateNoxWorldData(p, func(data *NoxWorldData) {
+												nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 													data.Quest.ArcheryContestScore_Quest01++
 												})
 											}
@@ -490,7 +492,7 @@ func archeryContest(p ns.Player) {
 													ns.Object("Heckler").ChatStr("That's a MISS!")
 												} else {
 													ns.Object("Heckler").ChatStr("That's a HIT!")
-													updateNoxWorldData(p, func(data *NoxWorldData) {
+													nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 														data.Quest.ArcheryContestScore_Quest01++
 													})
 												}
@@ -506,7 +508,7 @@ func archeryContest(p ns.Player) {
 													ns.Object("Heckler").ChatStr("That's a MISS!")
 												} else {
 													ns.Object("Heckler").ChatStr("That's a HIT!")
-													updateNoxWorldData(p, func(data *NoxWorldData) {
+													nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 														data.Quest.ArcheryContestScore_Quest01++
 													})
 												}
@@ -522,7 +524,7 @@ func archeryContest(p ns.Player) {
 													ns.Object("Heckler").ChatStr("That's a MISS!")
 												} else {
 													ns.Object("Heckler").ChatStr("That's a HIT!")
-													updateNoxWorldData(p, func(data *NoxWorldData) {
+													nw.UpdatePlayer(p, func(data *nw.PlayerData) {
 														data.Quest.ArcheryContestScore_Quest01++
 													})
 												}
@@ -531,7 +533,7 @@ func archeryContest(p ns.Player) {
 										}
 										ns.NewTimer(ns.Frames(45), func() {
 											ArcheryContestActive = false
-											data := loadMyNoxWorldData(p)
+											data := nw.LoadPlayer(p)
 											switch data.Quest.ArcheryContestScore_Quest01 {
 											case 0:
 												ns.Object("Heckler").ChatStr("You didn't hit any! It's a good day to be a barrel, I guess.")
