@@ -29,19 +29,26 @@ type PlayerData struct {
 		ItemsInInventory []ns.Obj
 	}
 	Quest struct {
-		// ix
-		TalkToTheMayor_Quest01                    QuestStatus
-		BecomeConjurerer_Quest01                  QuestStatus
+		// Conjurer Main Questline
+		JandorStartQuestCon_Quest01 QuestStatus
+		BecomeConjurerer_Quest01    QuestStatus
+		TalkToTheMayor_Quest01      QuestStatus
+		// Ix
+		HenrickCongrats_Quest01                   QuestStatus
 		MayorsScepter_Quest01                     QuestStatus
 		AldwynGiveScrollWar_MayorsScepterQuest_01 QuestStatus
 		TroubleAtTheManaMines_Quest01             QuestStatus
 		SpidersAtTheMayor_Quest01                 QuestStatus
 		MorganConManSellBow_Quest01               QuestStatus
-		TestQuestStatus_Quest01                   QuestStatus
 		TalkToAldwyn_Quest01                      QuestStatus
 		ArcheryContest_Quests01                   QuestStatus
 		ArcheryContestScore_Quest01               QuestStatus
-		HenrickCongrats_Quest01                   QuestStatus
+		JandorFieldsOfValor_Quest01               QuestStatus
+		// Wizard Questline
+		JandorWizStart_Quest01              QuestStatus
+		HorvathFindApprenticeStart_Quest01  QuestStatus
+		WizardLesson01_Quest01              QuestStatus
+		FirstTaskAsWizardApprentice_Quest01 QuestStatus
 	}
 }
 
