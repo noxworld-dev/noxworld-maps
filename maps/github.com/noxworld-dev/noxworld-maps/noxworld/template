@@ -1,0 +1,22 @@
+func NPCInit() {
+	ns.SetDialog(ns.Object("NPC"), ns.DialogYesNo, NPCDialogueStart, NPCDialogueEnd)
+}
+func NPCDialogueStart() {
+	ns.Object("NPC").LookAtObject(ns.GetCaller())
+	ns.Object("NPC").Idle()
+	p := ns.GetCaller().Player()
+	data := nw.LoadPlayer(p)
+	switch p.Unit().GetClass() {
+	case 0: // Warrior
+	case 1: // Wizard
+	case 2: // Conjurer
+	}
+
+}
+func NPCDialogueEnd() {
+	switch ns.GetAnswer(ns.Object("NPC")) {
+	case ns.AnswerGoodbye:
+	case ns.AnswerNo:
+	case ns.AnswerYes:
+	}
+}
