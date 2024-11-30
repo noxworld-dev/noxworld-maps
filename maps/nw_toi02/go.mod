@@ -1,4 +1,4 @@
-module nw_caveix
+module nw_toi02
 
 go 1.21
 
@@ -9,5 +9,6 @@ replace github.com/noxworld-dev/noxworld-maps/noxworld => ../github.com/noxworld
 require (
 	github.com/noxworld-dev/noxscript/ns/v4 v4.21.0
 	github.com/noxworld-dev/noxworld-maps/noxworld v0.0.0-00010101000000-000000000000
-	github.com/noxworld-dev/opennox-lib v0.0.0-20241111104024-77c44f5da21b
 )
+
+require github.com/noxworld-dev/opennox-lib v0.0.0-20241111104024-77c44f5da21b // indirect

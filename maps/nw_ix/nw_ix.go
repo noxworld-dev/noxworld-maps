@@ -68,8 +68,6 @@ func init() {
 		checkQuests()
 		ns.StoryPic(ns.Object("Ryan"), "IxGuard2Pic")
 		RyanInit()
-		ns.StoryPic(ns.Object("Mystic"), "Mystic")
-		MysticInit()
 	})
 }
 
@@ -79,46 +77,22 @@ func IxToCrossRoads() {
 	})
 }
 
-func IxToIxCem() {
+func IxToIxCemetery() {
 	nw.GoToMap(ns.GetHost().Player(), nw.MapIxCemetery, nw.GoToMapOptions{
-		Exit: "IxToIxCem",
+		Exit: "IxToIxCemetery",
 	})
 }
 
-func IxToTemple01() {
-	nw.GoToMap(ns.GetHost().Player(), nw.MapIxTemple1, nw.GoToMapOptions{
-		Exit: "IxToTemple01",
+func IxToTempleOfIx01() {
+	nw.GoToMap(ns.GetHost().Player(), nw.MapTempleOfIx01, nw.GoToMapOptions{
+		Exit: "IxToTempleOfIx01",
 	})
 }
 
-// Mystic: War08a
-func MysticInit() {
-	//ns.SetDialog(ns.Object("Mystic"), ns.DialogNormal, MysticDialogueStart, MysticDialogueEnd)
-}
-func MysticDialogueStart() {
-	ns.Object("Mystic").LookAtObject(ns.GetCaller())
-	p := ns.GetCaller().Player()
-	//data := nw.LoadPlayer(p)
-	switch p.Unit().GetClass() {
-	case 0:
-		rnd := ns.Random(1, 2)
-		switch rnd {
-		case 1:
-			ns.TellStory(audio.SwordsmanHurt, "War08a:Mystic")
-		case 2:
-			ns.TellStory(audio.SwordsmanHurt, "War08a:Mystic2")
-		}
-	case 1:
-		//Wiz08a:Mystic	Ahhhhhhhh... I see you carry the Halberd of Horrendous, young Wizard!
-		ns.TellStory(audio.SwordsmanHurt, "Wiz08a:Mystic2")
-	case 2:
-		// Con02a:Mystic
-		//Con08a:Mystic	So, now you have both the Halberd of Horrendous and our Heart of Nox. Well done, young Conjurer!
-		//Con08a:Mystic2	Perhaps you could use a scroll or potion?
-	}
-
-}
-func MysticDialogueEnd() {
+func IxToConStartCaveIx() {
+	nw.GoToMap(ns.GetHost().Player(), nw.MapConStartCaveIx, nw.GoToMapOptions{
+		Exit: "IxToConStartCaveIx",
+	})
 }
 
 // Julie: War08a
@@ -617,6 +591,9 @@ func TommyDialogueEnd() {
 
 func Mayors_GuardInit() {
 	ns.SetDialog(ns.Object("Mayor's_Guard"), ns.DialogNormal, Mayors_GuardDialogueStart, Mayors_GuardDialogueEnd)
+	ns.Object("Mayor's_Guard").OnEvent(ns.ObjectEvent(1), func() {
+
+	})
 }
 func Mayors_GuardDialogueStart() {
 	p := ns.GetCaller().Player()
@@ -793,25 +770,31 @@ func AldwynDialogueStart() {
 			}
 		}
 	case 2: // con
-		switch data.Quest.BecomeConjurerer_Quest01 {
-		case 0:
-			ns.SetDialog(ns.Object("Aldwyn"), ns.DialogYesNo, AldwynDialogueStart, AldwynDialogueEnd)
-			ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinGreeting")
-		case 10:
-			switch data.Quest.TroubleAtTheManaMines_Quest01 {
+		switch data.Quest.JandorStartQuestCon_Quest01 {
+		case 1:
+			nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
+				data.Quest.JandorStartQuestCon_Quest01 = 10
+			})
+			switch data.Quest.BecomeConjurerer_Quest01 {
 			case 0:
-				ns.SetDialog(ns.Object("Aldwyn"), ns.DialogNormal, AldwynDialogueStart, AldwynDialogueEnd)
-				ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinImp")
-				ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
-				ns.PrintStr("Go to the mines and locate the mine foreman.")
-				nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
-					data.Quest.TroubleAtTheManaMines_Quest01 = 1
-				})
-			case 1:
-				ns.SetDialog(ns.Object("Aldwyn"), ns.DialogNormal, AldwynDialogueStart, AldwynDialogueEnd)
-				ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinProd")
-				ns.PrintStr("Go to the mines and locate the mine foreman.")
+				ns.SetDialog(ns.Object("Aldwyn"), ns.DialogYesNo, AldwynDialogueStart, AldwynDialogueEnd)
+				ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinGreeting")
 			case 10:
+				switch data.Quest.TroubleAtTheManaMines_Quest01 {
+				case 0:
+					ns.SetDialog(ns.Object("Aldwyn"), ns.DialogNormal, AldwynDialogueStart, AldwynDialogueEnd)
+					ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinImp")
+					ns.AudioEvent(audio.JournalEntryAdd, p.Unit().Pos())
+					ns.PrintStr("Go to the mines and locate the mine foreman.")
+					nw.UpdatePlayer(ns.GetCaller().Player(), func(data *nw.PlayerData) {
+						data.Quest.TroubleAtTheManaMines_Quest01 = 1
+					})
+				case 1:
+					ns.SetDialog(ns.Object("Aldwyn"), ns.DialogNormal, AldwynDialogueStart, AldwynDialogueEnd)
+					ns.TellStory(audio.SwordsmanHurt, "Con02a:AldwinProd")
+					ns.PrintStr("Go to the mines and locate the mine foreman.")
+				case 10:
+				}
 			}
 		}
 	}
@@ -1400,4 +1383,566 @@ func henrickDialogueEnd() {
 	case ns.AnswerNo:
 		henrickInit()
 	}
+}
+
+func archeryContest(p ns.Player) {
+	nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+		data.Quest.ArcheryContestScore_Quest01 = 0
+	})
+	wp := ns.Random(1, 3)
+	switch wp {
+	case 1:
+		ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+		ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+		brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+		brlhealth := brl.CurrentHealth()
+		ns.NewTimer(ns.Frames(44), func() {
+			if brlhealth == brl.CurrentHealth() {
+				ns.Object("Heckler").ChatStr("That's a MISS!")
+			} else {
+				ns.Object("Heckler").ChatStr("That's a HIT!")
+				nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+					data.Quest.ArcheryContestScore_Quest01++
+				})
+			}
+		})
+		brl.DeleteAfter(ns.Frames(45))
+	case 2:
+		ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+		ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+		brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+		brlhealth := brl.CurrentHealth()
+		ns.NewTimer(ns.Frames(44), func() {
+			if brlhealth == brl.CurrentHealth() {
+				ns.Object("Heckler").ChatStr("That's a MISS!")
+			} else {
+				ns.Object("Heckler").ChatStr("That's a HIT!")
+				nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+					data.Quest.ArcheryContestScore_Quest01++
+				})
+			}
+		})
+		brl.DeleteAfter(ns.Frames(45))
+	case 3:
+		ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+		ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+		brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+		brlhealth := brl.CurrentHealth()
+		ns.NewTimer(ns.Frames(44), func() {
+			if brlhealth == brl.CurrentHealth() {
+				ns.Object("Heckler").ChatStr("That's a MISS!")
+			} else {
+				ns.Object("Heckler").ChatStr("That's a HIT!")
+				nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+					data.Quest.ArcheryContestScore_Quest01++
+				})
+			}
+		})
+		brl.DeleteAfter(ns.Frames(45))
+	}
+	ns.NewTimer(ns.Frames(45), func() {
+		wp := ns.Random(1, 3)
+		switch wp {
+		case 1:
+			ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+			ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+			brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+			brlhealth := brl.CurrentHealth()
+			ns.NewTimer(ns.Frames(44), func() {
+				if brlhealth == brl.CurrentHealth() {
+					ns.Object("Heckler").ChatStr("That's a MISS!")
+				} else {
+					ns.Object("Heckler").ChatStr("That's a HIT!")
+					nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+						data.Quest.ArcheryContestScore_Quest01++
+					})
+				}
+			})
+			brl.DeleteAfter(ns.Frames(45))
+		case 2:
+			ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+			ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+			brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+			brlhealth := brl.CurrentHealth()
+			ns.NewTimer(ns.Frames(44), func() {
+				if brlhealth == brl.CurrentHealth() {
+					ns.Object("Heckler").ChatStr("That's a MISS!")
+				} else {
+					ns.Object("Heckler").ChatStr("That's a HIT!")
+					nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+						data.Quest.ArcheryContestScore_Quest01++
+					})
+				}
+			})
+			brl.DeleteAfter(ns.Frames(45))
+		case 3:
+			ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+			ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+			brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+			brlhealth := brl.CurrentHealth()
+			ns.NewTimer(ns.Frames(44), func() {
+				if brlhealth == brl.CurrentHealth() {
+					ns.Object("Heckler").ChatStr("That's a MISS!")
+				} else {
+					ns.Object("Heckler").ChatStr("That's a HIT!")
+					nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+						data.Quest.ArcheryContestScore_Quest01++
+					})
+				}
+			})
+			brl.DeleteAfter(ns.Frames(45))
+		}
+		ns.NewTimer(ns.Frames(45), func() {
+			wp := ns.Random(1, 3)
+			switch wp {
+			case 1:
+				ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+				ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+				brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+				brlhealth := brl.CurrentHealth()
+				ns.NewTimer(ns.Frames(44), func() {
+					if brlhealth == brl.CurrentHealth() {
+						ns.Object("Heckler").ChatStr("That's a MISS!")
+					} else {
+						ns.Object("Heckler").ChatStr("That's a HIT!")
+						nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+							data.Quest.ArcheryContestScore_Quest01++
+						})
+					}
+				})
+				brl.DeleteAfter(ns.Frames(45))
+			case 2:
+				ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+				ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+				brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+				brlhealth := brl.CurrentHealth()
+				ns.NewTimer(ns.Frames(44), func() {
+					if brlhealth == brl.CurrentHealth() {
+						ns.Object("Heckler").ChatStr("That's a MISS!")
+					} else {
+						ns.Object("Heckler").ChatStr("That's a HIT!")
+						nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+							data.Quest.ArcheryContestScore_Quest01++
+						})
+					}
+				})
+				brl.DeleteAfter(ns.Frames(45))
+			case 3:
+				ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+				ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+				brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+				brlhealth := brl.CurrentHealth()
+				ns.NewTimer(ns.Frames(44), func() {
+					if brlhealth == brl.CurrentHealth() {
+						ns.Object("Heckler").ChatStr("That's a MISS!")
+					} else {
+						ns.Object("Heckler").ChatStr("That's a HIT!")
+						nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+							data.Quest.ArcheryContestScore_Quest01++
+						})
+					}
+				})
+				brl.DeleteAfter(ns.Frames(45))
+			}
+			ns.NewTimer(ns.Frames(45), func() {
+				wp := ns.Random(1, 3)
+				switch wp {
+				case 1:
+					ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+					ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+					brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+					brlhealth := brl.CurrentHealth()
+					ns.NewTimer(ns.Frames(44), func() {
+						if brlhealth == brl.CurrentHealth() {
+							ns.Object("Heckler").ChatStr("That's a MISS!")
+						} else {
+							ns.Object("Heckler").ChatStr("That's a HIT!")
+							nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+								data.Quest.ArcheryContestScore_Quest01++
+							})
+						}
+					})
+					brl.DeleteAfter(ns.Frames(45))
+				case 2:
+					ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+					ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+					brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+					brlhealth := brl.CurrentHealth()
+					ns.NewTimer(ns.Frames(44), func() {
+						if brlhealth == brl.CurrentHealth() {
+							ns.Object("Heckler").ChatStr("That's a MISS!")
+						} else {
+							ns.Object("Heckler").ChatStr("That's a HIT!")
+							nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+								data.Quest.ArcheryContestScore_Quest01++
+							})
+						}
+					})
+					brl.DeleteAfter(ns.Frames(45))
+				case 3:
+					ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+					ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+					brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+					brlhealth := brl.CurrentHealth()
+					ns.NewTimer(ns.Frames(44), func() {
+						if brlhealth == brl.CurrentHealth() {
+							ns.Object("Heckler").ChatStr("That's a MISS!")
+						} else {
+							ns.Object("Heckler").ChatStr("That's a HIT!")
+							nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+								data.Quest.ArcheryContestScore_Quest01++
+							})
+						}
+					})
+					brl.DeleteAfter(ns.Frames(45))
+				}
+				ns.NewTimer(ns.Frames(45), func() {
+					wp := ns.Random(1, 3)
+					switch wp {
+					case 1:
+						ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+						ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+						brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+						brlhealth := brl.CurrentHealth()
+						ns.NewTimer(ns.Frames(44), func() {
+							if brlhealth == brl.CurrentHealth() {
+								ns.Object("Heckler").ChatStr("That's a MISS!")
+							} else {
+								ns.Object("Heckler").ChatStr("That's a HIT!")
+								nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+									data.Quest.ArcheryContestScore_Quest01++
+								})
+							}
+						})
+						brl.DeleteAfter(ns.Frames(45))
+					case 2:
+						ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+						ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+						brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+						brlhealth := brl.CurrentHealth()
+						ns.NewTimer(ns.Frames(44), func() {
+							if brlhealth == brl.CurrentHealth() {
+								ns.Object("Heckler").ChatStr("That's a MISS!")
+							} else {
+								ns.Object("Heckler").ChatStr("That's a HIT!")
+								nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+									data.Quest.ArcheryContestScore_Quest01++
+								})
+							}
+						})
+						brl.DeleteAfter(ns.Frames(45))
+					case 3:
+						ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+						ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+						brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+						brlhealth := brl.CurrentHealth()
+						ns.NewTimer(ns.Frames(44), func() {
+							if brlhealth == brl.CurrentHealth() {
+								ns.Object("Heckler").ChatStr("That's a MISS!")
+							} else {
+								ns.Object("Heckler").ChatStr("That's a HIT!")
+								nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+									data.Quest.ArcheryContestScore_Quest01++
+								})
+							}
+						})
+						brl.DeleteAfter(ns.Frames(45))
+					}
+					ns.NewTimer(ns.Frames(45), func() {
+						wp := ns.Random(1, 3)
+						switch wp {
+						case 1:
+							ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+							ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+							brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+							brlhealth := brl.CurrentHealth()
+							ns.NewTimer(ns.Frames(44), func() {
+								if brlhealth == brl.CurrentHealth() {
+									ns.Object("Heckler").ChatStr("That's a MISS!")
+								} else {
+									ns.Object("Heckler").ChatStr("That's a HIT!")
+									nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+										data.Quest.ArcheryContestScore_Quest01++
+									})
+								}
+							})
+							brl.DeleteAfter(ns.Frames(45))
+						case 2:
+							ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+							ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+							brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+							brlhealth := brl.CurrentHealth()
+							ns.NewTimer(ns.Frames(44), func() {
+								if brlhealth == brl.CurrentHealth() {
+									ns.Object("Heckler").ChatStr("That's a MISS!")
+								} else {
+									ns.Object("Heckler").ChatStr("That's a HIT!")
+									nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+										data.Quest.ArcheryContestScore_Quest01++
+									})
+								}
+							})
+							brl.DeleteAfter(ns.Frames(45))
+						case 3:
+							ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+							ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+							brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+							brlhealth := brl.CurrentHealth()
+							ns.NewTimer(ns.Frames(44), func() {
+								if brlhealth == brl.CurrentHealth() {
+									ns.Object("Heckler").ChatStr("That's a MISS!")
+								} else {
+									ns.Object("Heckler").ChatStr("That's a HIT!")
+									nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+										data.Quest.ArcheryContestScore_Quest01++
+									})
+								}
+							})
+							brl.DeleteAfter(ns.Frames(45))
+						}
+						ns.NewTimer(ns.Frames(45), func() {
+							wp := ns.Random(1, 3)
+							switch wp {
+							case 1:
+								ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+								ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+								brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+								brlhealth := brl.CurrentHealth()
+								ns.NewTimer(ns.Frames(44), func() {
+									if brlhealth == brl.CurrentHealth() {
+										ns.Object("Heckler").ChatStr("That's a MISS!")
+									} else {
+										ns.Object("Heckler").ChatStr("That's a HIT!")
+										nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+											data.Quest.ArcheryContestScore_Quest01++
+										})
+									}
+								})
+								brl.DeleteAfter(ns.Frames(45))
+							case 2:
+								ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+								ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+								brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+								brlhealth := brl.CurrentHealth()
+								ns.NewTimer(ns.Frames(44), func() {
+									if brlhealth == brl.CurrentHealth() {
+										ns.Object("Heckler").ChatStr("That's a MISS!")
+									} else {
+										ns.Object("Heckler").ChatStr("That's a HIT!")
+										nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+											data.Quest.ArcheryContestScore_Quest01++
+										})
+									}
+								})
+								brl.DeleteAfter(ns.Frames(45))
+							case 3:
+								ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+								ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+								brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+								brlhealth := brl.CurrentHealth()
+								ns.NewTimer(ns.Frames(44), func() {
+									if brlhealth == brl.CurrentHealth() {
+										ns.Object("Heckler").ChatStr("That's a MISS!")
+									} else {
+										ns.Object("Heckler").ChatStr("That's a HIT!")
+										nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+											data.Quest.ArcheryContestScore_Quest01++
+										})
+									}
+								})
+								brl.DeleteAfter(ns.Frames(45))
+							}
+							ns.NewTimer(ns.Frames(45), func() {
+								wp := ns.Random(1, 3)
+								switch wp {
+								case 1:
+									ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+									ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+									brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+									brlhealth := brl.CurrentHealth()
+									ns.NewTimer(ns.Frames(44), func() {
+										if brlhealth == brl.CurrentHealth() {
+											ns.Object("Heckler").ChatStr("That's a MISS!")
+										} else {
+											ns.Object("Heckler").ChatStr("That's a HIT!")
+											nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+												data.Quest.ArcheryContestScore_Quest01++
+											})
+										}
+									})
+									brl.DeleteAfter(ns.Frames(45))
+								case 2:
+									ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+									ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+									brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+									brlhealth := brl.CurrentHealth()
+									ns.NewTimer(ns.Frames(44), func() {
+										if brlhealth == brl.CurrentHealth() {
+											ns.Object("Heckler").ChatStr("That's a MISS!")
+										} else {
+											ns.Object("Heckler").ChatStr("That's a HIT!")
+											nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+												data.Quest.ArcheryContestScore_Quest01++
+											})
+										}
+									})
+									brl.DeleteAfter(ns.Frames(45))
+								case 3:
+									ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+									ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+									brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+									brlhealth := brl.CurrentHealth()
+									ns.NewTimer(ns.Frames(44), func() {
+										if brlhealth == brl.CurrentHealth() {
+											ns.Object("Heckler").ChatStr("That's a MISS!")
+										} else {
+											ns.Object("Heckler").ChatStr("That's a HIT!")
+											nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+												data.Quest.ArcheryContestScore_Quest01++
+											})
+										}
+									})
+									brl.DeleteAfter(ns.Frames(45))
+								}
+								ns.NewTimer(ns.Frames(45), func() {
+									wp := ns.Random(1, 3)
+									switch wp {
+									case 1:
+										ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+										ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+										brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+										brlhealth := brl.CurrentHealth()
+										ns.NewTimer(ns.Frames(44), func() {
+											if brlhealth == brl.CurrentHealth() {
+												ns.Object("Heckler").ChatStr("That's a MISS!")
+											} else {
+												ns.Object("Heckler").ChatStr("That's a HIT!")
+												nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+													data.Quest.ArcheryContestScore_Quest01++
+												})
+											}
+										})
+										brl.DeleteAfter(ns.Frames(45))
+									case 2:
+										ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+										ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+										brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+										brlhealth := brl.CurrentHealth()
+										ns.NewTimer(ns.Frames(44), func() {
+											if brlhealth == brl.CurrentHealth() {
+												ns.Object("Heckler").ChatStr("That's a MISS!")
+											} else {
+												ns.Object("Heckler").ChatStr("That's a HIT!")
+												nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+													data.Quest.ArcheryContestScore_Quest01++
+												})
+											}
+										})
+										brl.DeleteAfter(ns.Frames(45))
+									case 3:
+										ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+										ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+										brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+										brlhealth := brl.CurrentHealth()
+										ns.NewTimer(ns.Frames(44), func() {
+											if brlhealth == brl.CurrentHealth() {
+												ns.Object("Heckler").ChatStr("That's a MISS!")
+											} else {
+												ns.Object("Heckler").ChatStr("That's a HIT!")
+												nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+													data.Quest.ArcheryContestScore_Quest01++
+												})
+											}
+										})
+										brl.DeleteAfter(ns.Frames(45))
+									}
+									ns.NewTimer(ns.Frames(45), func() {
+										wp := ns.Random(1, 3)
+										switch wp {
+										case 1:
+											ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget01"))
+											ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget01"), ns.Waypoint("BarrelTarget01"))
+											brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget01"))
+											brlhealth := brl.CurrentHealth()
+											ns.NewTimer(ns.Frames(44), func() {
+												if brlhealth == brl.CurrentHealth() {
+													ns.Object("Heckler").ChatStr("That's a MISS!")
+												} else {
+													ns.Object("Heckler").ChatStr("That's a HIT!")
+													nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+														data.Quest.ArcheryContestScore_Quest01++
+													})
+												}
+											})
+											brl.DeleteAfter(ns.Frames(45))
+										case 2:
+											ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget02"))
+											ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget02"), ns.Waypoint("BarrelTarget02"))
+											brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget02"))
+											brlhealth := brl.CurrentHealth()
+											ns.NewTimer(ns.Frames(44), func() {
+												if brlhealth == brl.CurrentHealth() {
+													ns.Object("Heckler").ChatStr("That's a MISS!")
+												} else {
+													ns.Object("Heckler").ChatStr("That's a HIT!")
+													nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+														data.Quest.ArcheryContestScore_Quest01++
+													})
+												}
+											})
+											brl.DeleteAfter(ns.Frames(45))
+										case 3:
+											ns.AudioEvent(audio.BlinkCast, ns.Waypoint("BarrelTarget03"))
+											ns.Effect(effect.SMOKE_BLAST, ns.Waypoint("BarrelTarget03"), ns.Waypoint("BarrelTarget03"))
+											brl := ns.CreateObject("TargetBarrel1", ns.Waypoint("BarrelTarget03"))
+											brlhealth := brl.CurrentHealth()
+											ns.NewTimer(ns.Frames(44), func() {
+												if brlhealth == brl.CurrentHealth() {
+													ns.Object("Heckler").ChatStr("That's a MISS!")
+												} else {
+													ns.Object("Heckler").ChatStr("That's a HIT!")
+													nw.UpdatePlayer(p, func(data *nw.PlayerData) {
+														data.Quest.ArcheryContestScore_Quest01++
+													})
+												}
+											})
+											brl.DeleteAfter(ns.Frames(45))
+										}
+										ns.NewTimer(ns.Frames(45), func() {
+											ArcheryContestActive = false
+											data := nw.LoadPlayer(p)
+											switch data.Quest.ArcheryContestScore_Quest01 {
+											case 0:
+												ns.Object("Heckler").ChatStr("You didn't hit any! It's a good day to be a barrel, I guess.")
+											case 1:
+												ns.Object("Heckler").ChatStr("You hit 1 out of 10. Try not to hurt yourself with that bow.")
+											case 2:
+												ns.Object("Heckler").ChatStr("You hit 2 out of 10. I guess luck counts for something.")
+											case 3:
+												ns.Object("Heckler").ChatStr("You hit 3 out of 10. Maybe we should get bigger barrels for you.")
+											case 4:
+												ns.Object("Heckler").ChatStr("You hit 4 out of 10. Maybe you need some spectacles.")
+											case 5:
+												ns.Object("Heckler").ChatStr("You hit 5 out of 10. Well, you hit half of them -- but you missed half too.")
+											case 6:
+												ns.Object("Heckler").ChatStr("You hit 6 out of 10. Maybe a drink would steady your hand.")
+											case 7:
+												ns.Object("Heckler").ChatStr("You hit 7 out of 10. A fair effort.")
+											case 8:
+												ns.Object("Heckler").ChatStr("You hit 8 out of 10. Good shooting, but not quite good enough.")
+											case 9:
+												ns.Object("Heckler").ChatStr("Excellent shooting... You hit 9 out of 10!")
+											case 10:
+												ns.Object("Heckler").ChatStr("Exceptional shooting... You hit 10 out of 10!")
+											}
+										})
+									})
+								})
+							})
+						})
+					})
+				})
+			})
+		})
+	})
 }
