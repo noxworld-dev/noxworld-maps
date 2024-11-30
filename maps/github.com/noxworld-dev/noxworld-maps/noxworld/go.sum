@@ -1,8 +1,0 @@
-github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
-github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/noxworld-dev/noxscript/ns/v4 v4.21.0 h1:BHV6PZbskAQkMRbi6+Wq+VFNpdPj1V8mSojN8N+IXlU=
-github.com/noxworld-dev/noxscript/ns/v4 v4.21.0/go.mod h1:sumxNbzs331R1Ohkxf4uOKE7oZsXYmcltRdP/mz8YJs=
-github.com/noxworld-dev/opennox-lib v0.0.0-20241111104024-77c44f5da21b h1:ACPfu918u2gK91n8wH0V279zUBDehAZuRY3klrCnTX8=
-github.com/noxworld-dev/opennox-lib v0.0.0-20241111104024-77c44f5da21b/go.mod h1:JBIs5Pqplyg77EwvNIURCzIwckkQisakw82WWAEf2U4=
-github.com/shoenig/test v1.7.0 h1:eWcHtTXa6QLnBvm0jgEabMRN/uJ4DMV3M8xUGgRkZmk=
-github.com/shoenig/test v1.7.0/go.mod h1:UxJ6u/x2v/TNs/LoLxBNJRV9DiwBBKYxXSyczsBHFoI=
